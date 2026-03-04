@@ -1,0 +1,28 @@
+{
+  "name": "adit-portfolio",
+  "version": "2.0.0",
+  "description": "Adit Bhattarai's Portfolio Website with Secure Admin Portal",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "keywords": [
+    "portfolio",
+    "express",
+    "sqlite",
+    "admin"
+  ],
+  "author": "Adit Bhattarai",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "nodemailer": "^6.9.7",
+    "sqlite3": "^5.1.6"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

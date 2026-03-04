@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Skills — Admin</title>
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>A</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0f0f0f;
+            color: #e5e7eb;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        header h1 {
+            font-size: 1.6rem;
+            font-weight: 700;
+        }
+
+        header a {
+            color: rgba(255, 255, 255, 0.4);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        header a:hover {
+            color: white;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 700px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel {
+            background: #1a1a1a;
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 16px;
+            padding: 1.5rem;
+        }
+
+        .panel h2 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Add form */
+        .add-form {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+        }
+
+        .add-form input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 0.65rem 0.9rem;
+            color: white;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            transition: border-color 0.2s;
+        }
+
+        .add-form input:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .add-form input::placeholder {
+            color: rgba(255, 255, 255, 0.25);
+        }
+
+        .btn-add {
+            background: white;
+            color: #111;
+            border: none;
+            border-radius: 8px;
+            padding: 0.65rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-add:hover {
+            opacity: 0.85;
+        }
+
+        /* Skill rows */
+        .skill-row {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.6rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            animation: fadein 0.2s ease;
+        }
+
+        @keyframes fadein {
+            from {
+                opacity: 0;
+                transform: translateY(4px);
+            }
+
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        .skill-row:last-child {
+            border-bottom: none;
+        }
+
+        .skill-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .skill-icon img {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+        }
+
+        .skill-name-text {
+            flex: 1;
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .skill-icon-url-text {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.25);
+            max-width: 100px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .btn-delete {
+            background: rgba(239, 68, 68, 0.12);
+            color: #f87171;
+            border: none;
+            border-radius: 6px;
+            padding: 0.35rem 0.7rem;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-delete:hover {
+            background: rgba(239, 68, 68, 0.25);
+        }
+
+        .empty-msg {
+            color: rgba(255, 255, 255, 0.2);
+            font-size: 0.9rem;
+            text-align: center;
+            padding: 1.5rem 0;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #22c55e;
+            color: white;
+            padding: 0.75rem 1.4rem;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            z-index: 999;
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+
+        .toast.error {
+            background: #ef4444;
+        }
+
+        .icon-hint {
+            font-size: 0.72rem;
+            color: rgba(255, 255, 255, 0.2);
+            margin-top: -0.3rem;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Manage Skills</h1>
+        <a href="index.html">← Back to Portfolio</a>
+    </header>
+
+    <div class="grid">
+        <!-- Software Skills -->
+        <div class="panel">
+            <h2>Software Skills</h2>
+            <div class="add-form">
+                <input type="text" id="sw-name" placeholder="Skill name (e.g. DaVinci Resolve)">
+                <input type="url" id="sw-icon" placeholder="Icon URL (paste devicon or any .svg/.png URL)">
+                <p class="icon-hint">Tip: devicon URLs →
+                    https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/[name]/[name]-original.svg</p>
+                <button class="btn-add" onclick="addSkill('Software Skills', 'sw-name', 'sw-icon', 'sw-list')">+ Add
+                    Skill</button>
+            </div>
+            <div id="sw-list">
+                <p class="empty-msg">Loading...</p>
+            </div>
+        </div>
+
+        <!-- Coding Skills -->
+        <div class="panel">
+            <h2>Coding Skills</h2>
+            <div class="add-form">
+                <input type="text" id="cs-name" placeholder="Skill name (e.g. JavaScript)">
+                <input type="url" id="cs-icon" placeholder="Icon URL">
+                <p class="icon-hint">Tip: devicon URLs →
+                    https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/[name]/[name]-original.svg</p>
+                <button class="btn-add" onclick="addSkill('Coding Skills', 'cs-name', 'cs-icon', 'cs-list')">+ Add
+                    Skill</button>
+            </div>
+            <div id="cs-list">
+                <p class="empty-msg">Loading...</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        const API = '/api/skills';
+
+        function showToast(msg, error = false) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.className = 'toast show' + (error ? ' error' : '');
+            setTimeout(() => t.className = 'toast', 2500);
+        }
+
+        function renderList(skills, containerId) {
+            const el = document.getElementById(containerId);
+            if (!skills.length) {
+                el.innerHTML = '<p class="empty-msg">No skills yet — add one above.</p>';
+                return;
+            }
+            el.innerHTML = skills.map(s => `
+            <div class="skill-row" id="row-${s.id}">
+                <div class="skill-icon">
+                    ${s.icon_url ? `<img src="${s.icon_url}" alt="${s.name}" onerror="this.style.display='none'">` : ''}
+                </div>
+                <span class="skill-name-text">${s.name}</span>
+                <button class="btn-delete" onclick="deleteSkill(${s.id})">Remove</button>
+            </div>
+        `).join('');
+        }
+
+        async function loadSkills() {
+            try {
+                const res = await fetch(API);
+                const data = await res.json();
+                if (!data.success) throw new Error();
+
+                const sw = data.skills.filter(s => s.category === 'Software Skills');
+                const cs = data.skills.filter(s => s.category === 'Coding Skills');
+
+                renderList(sw, 'sw-list');
+                renderList(cs, 'cs-list');
+            } catch {
+                showToast('Cannot connect to server. Is it running?', true);
+                document.getElementById('sw-list').innerHTML = '<p class="empty-msg">Server offline</p>';
+                document.getElementById('cs-list').innerHTML = '<p class="empty-msg">Server offline</p>';
+            }
+        }
+
+        async function addSkill(category, nameId, iconId, listId) {
+            const name = document.getElementById(nameId).value.trim();
+            const icon_url = document.getElementById(iconId).value.trim();
+
+            if (!name) { showToast('Skill name is required', true); return; }
+
+            try {
+                const res = await fetch(API, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, category, icon_url })
+                });
+                const data = await res.json();
+                if (!data.success) throw new Error(data.message);
+
+                document.getElementById(nameId).value = '';
+                document.getElementById(iconId).value = '';
+                showToast(`"${name}" added!`);
+                loadSkills();
+            } catch (e) {
+                showToast(e.message || 'Error adding skill', true);
+            }
+        }
+
+        async function deleteSkill(id) {
+            if (!confirm('Remove this skill?')) return;
+            try {
+                const res = await fetch(`${API}/${id}`, { method: 'DELETE' });
+                const data = await res.json();
+                if (!data.success) throw new Error(data.message);
+                showToast('Skill removed');
+                loadSkills();
+            } catch (e) {
+                showToast(e.message || 'Error removing skill', true);
+            }
+        }
+
+        loadSkills();
+    </script>
+
+</body>
+
+</html>

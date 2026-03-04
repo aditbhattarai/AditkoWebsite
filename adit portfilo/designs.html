@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Adit Bhattarai — UI/UX and graphic design projects. Explore my design work including interfaces, brand identities, and prototypes.">
+    <title>My Designs — Adit Bhattarai</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>A</text></svg>">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* ── Page-specific overrides ── */
+        body {
+            background: #0a0a0a;
+        }
+
+        /* Hero */
+        .designs-hero {
+            background: #0a0a0a;
+            padding: 10rem 0 5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .designs-hero::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 700px;
+            height: 400px;
+            background: radial-gradient(ellipse, rgba(79, 110, 247, 0.12) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .designs-hero-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: rgba(255, 255, 255, 0.35);
+            text-decoration: none;
+            font-size: 0.88rem;
+            margin-bottom: 2.5rem;
+            transition: color 0.2s ease;
+        }
+
+        .designs-hero-back:hover {
+            color: rgba(255, 255, 255, 0.75);
+        }
+
+        .designs-eyebrow {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 3.5px;
+            text-transform: uppercase;
+            color: var(--accent-light);
+            margin-bottom: 1.2rem;
+            padding: 0.4rem 1.2rem;
+            background: rgba(79, 110, 247, 0.1);
+            border: 1px solid rgba(79, 110, 247, 0.22);
+            border-radius: 50px;
+        }
+
+        .designs-hero h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: clamp(2.8rem, 7vw, 5.5rem);
+            font-weight: 800;
+            color: #ffffff;
+            line-height: 1.1;
+            margin-bottom: 1.4rem;
+        }
+
+        .designs-hero h1 em {
+            font-style: normal;
+            background: linear-gradient(135deg, #4f6ef7, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .designs-hero p {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.38);
+            max-width: 520px;
+            margin: 0 auto 0;
+            line-height: 1.85;
+        }
+
+        /* Filter bar */
+        .designs-filter {
+            display: flex;
+            gap: 0.7rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 3rem 0 4rem;
+        }
+
+        .df-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            padding: 0.55rem 1.4rem;
+            border-radius: 50px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .df-btn:hover,
+        .df-btn.active {
+            background: rgba(79, 110, 247, 0.18);
+            border-color: rgba(79, 110, 247, 0.45);
+            color: #ffffff;
+        }
+
+        /* Design grid */
+        .designs-section {
+            background: #0a0a0a;
+            padding: 0 0 8rem;
+        }
+
+        .designs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 2rem;
+        }
+
+        /* Design card */
+        .design-card {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 22px;
+            overflow: hidden;
+            transition: transform 0.36s ease, border-color 0.36s ease, box-shadow 0.36s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .design-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(79, 110, 247, 0.35);
+            box-shadow: 0 28px 70px rgba(0, 0, 0, 0.55);
+        }
+
+        /* Thumbnail */
+        .dc-thumb {
+            position: relative;
+            aspect-ratio: 4/3;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            overflow: hidden;
+        }
+
+        .dc-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.85;
+            transition: transform 0.5s ease, opacity 0.4s ease;
+        }
+
+        .design-card:hover .dc-thumb img {
+            transform: scale(1.06);
+            opacity: 1;
+        }
+
+        /* Gradient placeholder when no image */
+        .dc-thumb-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dc-thumb-placeholder svg {
+            width: 48px;
+            height: 48px;
+            opacity: 0.2;
+        }
+
+        /* Hover overlay */
+        .dc-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(10, 10, 10, 0.78);
+            backdrop-filter: blur(4px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.9rem;
+            opacity: 0;
+            transition: opacity 0.35s ease;
+        }
+
+        .design-card:hover .dc-overlay {
+            opacity: 1;
+        }
+
+        .dc-view-btn {
+            background: rgba(79, 110, 247, 0.9);
+            color: #fff;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 50px;
+            font-size: 0.92rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+
+        .dc-view-btn:hover {
+            background: #4f6ef7;
+            transform: scale(1.05);
+        }
+
+        .dc-overlay-tools {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 0 1rem;
+        }
+
+        .dc-overlay-tool {
+            font-size: 0.72rem;
+            color: rgba(255, 255, 255, 0.55);
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 0.22rem 0.7rem;
+            border-radius: 50px;
+        }
+
+        /* Category badge on card */
+        .dc-category {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            padding: 0.28rem 0.75rem;
+            border-radius: 50px;
+        }
+
+        /* Card info below thumb */
+        .dc-info {
+            padding: 1.5rem 1.6rem 1.8rem;
+        }
+
+        .dc-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+        }
+
+        .dc-desc {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.4);
+            line-height: 1.7;
+            margin-bottom: 1.1rem;
+        }
+
+        .dc-tags {
+            display: flex;
+            gap: 0.45rem;
+            flex-wrap: wrap;
+        }
+
+        .dc-tag {
+            font-size: 0.75rem;
+            color: rgba(79, 110, 247, 0.9);
+            background: rgba(79, 110, 247, 0.1);
+            border: 1px solid rgba(79, 110, 247, 0.2);
+            padding: 0.22rem 0.7rem;
+            border-radius: 50px;
+            font-weight: 600;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .designs-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .designs-hero h1 {
+                font-size: 2.4rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-dark">
+        <div class="nav-container">
+            <a href="index.html" class="logo">ADIT</a>
+            <button class="hamburger" id="hamburger" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="index.html#home" class="nav-link">Home</a></li>
+                <li><a href="index.html#about" class="nav-link">About</a></li>
+                <li><a href="services.html" class="nav-link">Services</a></li>
+                <li><a href="designs.html" class="nav-link" style="color: var(--accent-light); font-weight: 700;">My
+                        Designs</a></li>
+                <li><a href="work.html" class="nav-link">My Work</a></li>
+                <li><a href="blog.html" class="nav-link">Blog</a></li>
+                <li><a href="index.html#contact" class="nav-link btn-contact">Get in touch</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <div class="designs-hero">
+        <div class="container">
+            <a href="index.html" class="designs-hero-back">← Back to Portfolio</a>
+            <div>
+                <span class="designs-eyebrow">Creative Work</span>
+            </div>
+            <h1>My <em>Designs</em></h1>
+            <p>A curated collection of UI/UX work, brand identities, and visual projects — where function meets form.
+            </p>
+        </div>
+    </div>
+
+    <!-- Filter -->
+    <div class="container">
+        <div class="designs-filter" id="designs-filter">
+            <button class="df-btn active" data-filter="all" onclick="filterDesigns('all', this)">All</button>
+            <button class="df-btn" data-filter="ui-ux" onclick="filterDesigns('ui-ux', this)">UI / UX</button>
+            <button class="df-btn" data-filter="branding" onclick="filterDesigns('branding', this)">Branding</button>
+            <button class="df-btn" data-filter="web" onclick="filterDesigns('web', this)">Web Design</button>
+            <button class="df-btn" data-filter="graphic" onclick="filterDesigns('graphic', this)">Graphic
+                Design</button>
+        </div>
+    </div>
+
+    <!-- Grid -->
+    <section class="designs-section">
+        <div class="container">
+            <div class="designs-grid" id="designs-grid">
+
+                <!-- Card 1 -->
+                <div class="design-card" data-category="ui-ux">
+                    <div class="dc-thumb">
+                        <div class="dc-thumb-placeholder">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="1.5">
+                                <rect x="3" y="3" width="18" height="18" rx="3" />
+                                <circle cx="9" cy="9" r="2" />
+                                <path d="M21 15l-5-5L5 21" />
+                            </svg>
+                        </div>
+                        <span class="dc-category">UI / UX</span>
+                        <div class="dc-overlay">
+                            <button class="dc-view-btn" onclick="alert('Project coming soon!')">View Project</button>
+                            <div class="dc-overlay-tools">
+                                <span class="dc-overlay-tool">Figma</span>
+                                <span class="dc-overlay-tool">Prototyping</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dc-info">
+                        <h3 class="dc-title">Hospital App UI</h3>
+                        <p class="dc-desc">Patient-facing mobile interface designed for a Hospital Management System —
+                            clean, accessible, and intuitive.</p>
+                        <div class="dc-tags">
+                            <span class="dc-tag">Figma</span>
+                            <span class="dc-tag">Mobile</span>
+                            <span class="dc-tag">Healthcare</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="design-card" data-category="web">
+                    <div class="dc-thumb">
+                        <div class="dc-thumb-placeholder">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="1.5">
+                                <rect x="2" y="3" width="20" height="14" rx="2" />
+                                <path d="M8 21h8M12 17v4" />
+                            </svg>
+                        </div>
+                        <span class="dc-category">Web Design</span>
+                        <div class="dc-overlay">
+                            <button class="dc-view-btn" onclick="window.location.href='index.html'">View
+                                Project</button>
+                            <div class="dc-overlay-tools">
+                                <span class="dc-overlay-tool">HTML/CSS</span>
+                                <span class="dc-overlay-tool">Design System</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dc-info">
+                        <h3 class="dc-title">This Portfolio</h3>
+                        <p class="dc-desc">Full web design &amp; development — custom design system, dark aesthetic,
+                            smooth micro-animations, built from scratch.</p>
+                        <div class="dc-tags">
+                            <span class="dc-tag">Web Design</span>
+                            <span class="dc-tag">CSS</span>
+                            <span class="dc-tag">Animation</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="design-card" data-category="branding">
+                    <div class="dc-thumb">
+                        <div class="dc-thumb-placeholder">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="1.5">
+                                <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                                <path d="M2 17l10 5 10-5" />
+                                <path d="M2 12l10 5 10-5" />
+                            </svg>
+                        </div>
+                        <span class="dc-category">Branding</span>
+                        <div class="dc-overlay">
+                            <button class="dc-view-btn" onclick="alert('Project coming soon!')">View Project</button>
+                            <div class="dc-overlay-tools">
+                                <span class="dc-overlay-tool">Adobe XD</span>
+                                <span class="dc-overlay-tool">Logo Design</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dc-info">
+                        <h3 class="dc-title">Brand Identity Concept</h3>
+                        <p class="dc-desc">A complete brand identity concept including logo, colour palette, typography
+                            guide, and usage examples.</p>
+                        <div class="dc-tags">
+                            <span class="dc-tag">Adobe XD</span>
+                            <span class="dc-tag">Logo</span>
+                            <span class="dc-tag">Typography</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="design-card" data-category="ui-ux">
+                    <div class="dc-thumb">
+                        <div class="dc-thumb-placeholder">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="1.5">
+                                <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" />
+                            </svg>
+                        </div>
+                        <span class="dc-category">UI / UX</span>
+                        <div class="dc-overlay">
+                            <button class="dc-view-btn" onclick="alert('Project coming soon!')">View Project</button>
+                            <div class="dc-overlay-tools">
+                                <span class="dc-overlay-tool">Figma</span>
+                                <span class="dc-overlay-tool">User Research</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dc-info">
+                        <h3 class="dc-title">E-Commerce Checkout Flow</h3>
+                        <p class="dc-desc">Redesigned checkout experience for a mock e-commerce platform, reducing
+                            friction and improving conversion.</p>
+                        <div class="dc-tags">
+                            <span class="dc-tag">Figma</span>
+                            <span class="dc-tag">UX Research</span>
+                            <span class="dc-tag">E-Commerce</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 5 -->
+                <div class="design-card" data-category="graphic">
+                    <div class="dc-thumb">
+                        <div class="dc-thumb-placeholder">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="1.5">
+                                <circle cx="12" cy="12" r="10" />
+                                <circle cx="12" cy="12" r="4" />
+                                <line x1="4.93" y1="4.93" x2="9.17" y2="9.17" />
+                                <line x1="14.83" y1="14.83" x2="19.07" y2="19.07" />
+                                <line x1="14.83" y1="9.17" x2="19.07" y2="4.93" />
+                                <line x1="4.93" y1="19.07" x2="9.17" y2="14.83" />
+                            </svg>
+                        </div>
+                        <span class="dc-category">Graphic</span>
+                        <div class="dc-overlay">
+                            <button class="dc-view-btn" onclick="alert('Project coming soon!')">View Project</button>
+                            <div class="dc-overlay-tools">
+                                <span class="dc-overlay-tool">Adobe XD</span>
+                                <span class="dc-overlay-tool">Illustration</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dc-info">
+                        <h3 class="dc-title">Social Media Visuals</h3>
+                        <p class="dc-desc">Custom social media post designs — consistent, bold and scroll-stopping
+                            across Instagram and Twitter/X.</p>
+                        <div class="dc-tags">
+                            <span class="dc-tag">Adobe XD</span>
+                            <span class="dc-tag">Social Media</span>
+                            <span class="dc-tag">Visual Design</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 6 — "More Coming" placeholder -->
+                <div class="design-card" style="opacity: 0.45; cursor: default;" data-category="ui-ux">
+                    <div class="dc-thumb">
+                        <div class="dc-thumb-placeholder" style="background: rgba(255,255,255,0.02);">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1.5">
+                                <line x1="12" y1="5" x2="12" y2="19" />
+                                <line x1="5" y1="12" x2="19" y2="12" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="dc-info">
+                        <h3 class="dc-title" style="color: rgba(255,255,255,0.3);">More Coming Soon</h3>
+                        <p class="dc-desc" style="color: rgba(255,255,255,0.18);">New project designs are in progress
+                            and will be added here shortly.</p>
+                        <div class="dc-tags">
+                            <span class="dc-tag" style="opacity:0.35">In Progress</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2026 Adit Bhattarai. All rights reserved.</p>
+                <div class="social-links">
+                    <a href="https://github.com/aditbhattarai" class="social-link" aria-label="GitHub" target="_blank"
+                        rel="noopener">GitHub</a>
+                    <a href="https://linkedin.com/in/aditbhattarai" class="social-link" aria-label="LinkedIn"
+                        target="_blank" rel="noopener">LinkedIn</a>
+                    <a href="https://x.com/aditbhattarai" class="social-link" aria-label="X / Twitter" target="_blank"
+                        rel="noopener">X</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Hamburger menu toggle
+        const hamburgerBtn = document.getElementById('hamburger');
+        const navMenuEl = document.getElementById('nav-menu');
+        if (hamburgerBtn && navMenuEl) {
+            hamburgerBtn.addEventListener('click', () => {
+                hamburgerBtn.classList.toggle('active');
+                navMenuEl.classList.toggle('active');
+            });
+            navMenuEl.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    hamburgerBtn.classList.remove('active');
+                    navMenuEl.classList.remove('active');
+                });
+            });
+        }
+
+        // Navbar scroll behaviour
+        const navbar = document.querySelector('.navbar');
+        let lastScroll = 0;
+        window.addEventListener('scroll', () => {
+            const cur = window.pageYOffset;
+            if (cur > 100) {
+                navbar.style.background = 'rgba(10,10,10,0.98)';
+                navbar.classList.toggle('hidden', cur > lastScroll);
+            } else {
+                navbar.style.background = 'rgba(10,10,10,0.95)';
+                navbar.classList.remove('hidden');
+            }
+            lastScroll = cur;
+        });
+
+        // Filter logic
+        function filterDesigns(category, btn) {
+            document.querySelectorAll('.df-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.querySelectorAll('.design-card').forEach(card => {
+                const match = category === 'all' || card.dataset.category === category;
+                card.style.display = match ? '' : 'none';
+            });
+        }
+    </script>
+</body>
+
+</html>

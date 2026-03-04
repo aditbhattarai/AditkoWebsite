@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Services offered by Adit Bhattarai — Video Editing, Web Development, UI/UX Design, Mobile Apps, and Backend Development.">
+    <title>Services — Adit Bhattarai</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>A</text></svg>">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* ── Page-specific overrides ── */
+        .services-page-hero {
+            min-height: 52vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #111111;
+            position: relative;
+            overflow: hidden;
+            padding-top: 5rem;
+        }
+
+        .services-page-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at 15% 60%, rgba(79, 110, 247, 0.12) 0%, transparent 55%),
+                radial-gradient(circle at 85% 30%, rgba(255, 255, 255, 0.06) 0%, transparent 50%);
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        /* decorative grid lines */
+        .services-page-hero::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+        }
+
+        .services-hero-content {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .services-hero-eyebrow {
+            display: inline-block;
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.4);
+            margin-bottom: 1.4rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .services-hero-title {
+            font-family: Georgia, 'Times New Roman', serif;
+            font-size: clamp(3rem, 7vw, 5.5rem);
+            font-weight: 800;
+            color: #ffffff;
+            line-height: 1.1;
+            margin-bottom: 1.4rem;
+            animation: fadeInUp 0.9s ease both;
+        }
+
+        .services-hero-sub {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 1.1rem;
+            max-width: 520px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.8;
+            animation: fadeInUp 0.9s ease 0.15s both;
+        }
+
+        .services-hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            background: #ffffff;
+            color: #111111;
+            font-weight: 700;
+            font-size: 0.95rem;
+            padding: 0.9rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            animation: fadeInUp 0.9s ease 0.3s both;
+        }
+
+        .services-hero-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(255, 255, 255, 0.15);
+        }
+
+        /* ── Service Cards (enhanced) ── */
+        .services-full {
+            background: #111111;
+            padding: 7rem 0 9rem;
+        }
+
+        .services-full .section-title-center {
+            color: #ffffff;
+            margin-bottom: 1rem;
+        }
+
+        .services-intro {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 1rem;
+            max-width: 500px;
+            margin: 0 auto 4.5rem;
+            line-height: 1.8;
+        }
+
+        .services-big-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .svc-card {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 22px;
+            padding: 3rem 2.5rem 2.5rem;
+            transition: all 0.35s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: default;
+        }
+
+        .svc-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+            opacity: 0;
+            transition: opacity 0.35s ease;
+        }
+
+        .svc-card:hover {
+            background: rgba(255, 255, 255, 0.07);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-8px);
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        .svc-card:hover::before {
+            opacity: 1;
+        }
+
+        .svc-icon-wrap {
+            width: 64px;
+            height: 64px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 1.8rem;
+            transition: transform 0.3s ease;
+        }
+
+        .svc-card:hover .svc-icon-wrap {
+            transform: scale(1.1) rotate(-4deg);
+        }
+
+        .svc-card h3 {
+            font-family: Georgia, 'Times New Roman', serif;
+            font-size: 1.55rem;
+            color: #ffffff;
+            margin-bottom: 1rem;
+        }
+
+        .svc-card p {
+            color: rgba(255, 255, 255, 0.55);
+            line-height: 1.85;
+            font-size: 0.97rem;
+            margin-bottom: 1.8rem;
+        }
+
+        .svc-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .svc-tag {
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            padding: 0.3rem 0.85rem;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: rgba(255, 255, 255, 0.6);
+            text-transform: uppercase;
+        }
+
+        .svc-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: transparent;
+            border: 1.5px solid rgba(255, 255, 255, 0.25);
+            color: rgba(255, 255, 255, 0.8);
+            padding: 0.7rem 1.4rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .svc-btn:hover {
+            background: #ffffff;
+            color: #111111;
+            border-color: #ffffff;
+            transform: translateX(4px);
+        }
+
+        /* ── Process Section ── */
+        .services-process {
+            background: #f5f4f0;
+            padding: 8rem 0;
+        }
+
+        .services-process .section-title-center {
+            color: #111111;
+            margin-bottom: 1rem;
+        }
+
+        .process-sub {
+            text-align: center;
+            color: #6b7280;
+            font-size: 1rem;
+            max-width: 480px;
+            margin: 0 auto 5rem;
+            line-height: 1.8;
+        }
+
+        .process-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 2.5rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .process-step {
+            text-align: center;
+            position: relative;
+        }
+
+        .step-number {
+            width: 56px;
+            height: 56px;
+            background: #111111;
+            color: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: Georgia, serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin: 0 auto 1.5rem;
+        }
+
+        .process-step h4 {
+            font-family: Georgia, 'Times New Roman', serif;
+            font-size: 1.2rem;
+            color: #111111;
+            margin-bottom: 0.75rem;
+        }
+
+        .process-step p {
+            color: #6b7280;
+            font-size: 0.93rem;
+            line-height: 1.75;
+        }
+
+        /* ── FAQ ── */
+        .services-faq {
+            background: #111111;
+            padding: 8rem 0;
+        }
+
+        .services-faq .section-title-center {
+            color: #ffffff;
+            margin-bottom: 1rem;
+        }
+
+        .faq-sub {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 1rem;
+            margin-bottom: 4rem;
+        }
+
+        .faq-list {
+            max-width: 760px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .faq-item {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            overflow: hidden;
+            transition: border-color 0.3s ease;
+        }
+
+        .faq-item.open {
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+
+        .faq-question {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.04);
+            border: none;
+            padding: 1.4rem 1.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            text-align: left;
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: background 0.25s ease;
+        }
+
+        .faq-question:hover {
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+        .faq-chevron {
+            font-size: 1.1rem;
+            transition: transform 0.3s ease;
+            flex-shrink: 0;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .faq-item.open .faq-chevron {
+            transform: rotate(180deg);
+            color: #ffffff;
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.3s ease;
+            padding: 0 1.8rem;
+            color: rgba(255, 255, 255, 0.55);
+            font-size: 0.96rem;
+            line-height: 1.85;
+        }
+
+        .faq-item.open .faq-answer {
+            max-height: 300px;
+            padding: 0 1.8rem 1.4rem;
+        }
+
+        /* ── CTA Banner ── */
+        .services-cta {
+            background: #f5f4f0;
+            padding: 8rem 0;
+            text-align: center;
+        }
+
+        .cta-inner {
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        .cta-inner h2 {
+            font-family: Georgia, 'Times New Roman', serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            color: #111111;
+            margin-bottom: 1.2rem;
+            line-height: 1.2;
+        }
+
+        .cta-inner p {
+            color: #6b7280;
+            font-size: 1.05rem;
+            margin-bottom: 2.5rem;
+            line-height: 1.8;
+        }
+
+        .cta-btns {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-dark {
+            background: #111111;
+            color: #ffffff;
+            padding: 0.9rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-dark:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-outline-dark {
+            background: transparent;
+            color: #111111;
+            border: 2px solid #111111;
+            padding: 0.9rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-dark:hover {
+            background: #111111;
+            color: #ffffff;
+        }
+
+        /* ── Footer (reuse main) ── */
+        .footer {
+            background: #0a0a0a;
+            padding: 2.5rem 0;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-content p {
+            color: rgba(255, 255, 255, 0.35);
+            font-size: 0.88rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .social-link {
+            color: rgba(255, 255, 255, 0.35);
+            text-decoration: none;
+            font-size: 0.88rem;
+            transition: color 0.3s ease;
+        }
+
+        .social-link:hover {
+            color: #ffffff;
+        }
+
+        /* active nav state */
+        .nav-link.active {
+            color: #111111;
+            font-weight: 700;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ── Navbar ── -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">ADIT</a>
+            <button class="hamburger" id="hamburger" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="index.html#about" class="nav-link">About</a></li>
+                <li><a href="services.html" class="nav-link active">Services</a></li>
+                <li><a href="projects.html" class="nav-link">Projects</a></li>
+                <li><a href="work.html" class="nav-link">My Work</a></li>
+                <li><a href="blog.html" class="nav-link">Blog</a></li>
+                <li><a href="index.html#contact" class="nav-link btn-contact">Get in touch</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- ── Hero Banner ── -->
+    <section class="services-page-hero">
+        <div class="services-hero-content">
+            <span class="services-hero-eyebrow">What I offer</span>
+            <h1 class="services-hero-title">Services</h1>
+            <p class="services-hero-sub">From clean code to polished video edits — here's what I can help you build,
+                design, or create.</p>
+            <a href="index.html#contact" class="services-hero-cta">
+                Let's Work Together
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                    <polyline points="12 5 19 12 12 19" />
+                </svg>
+            </a>
+        </div>
+    </section>
+
+    <!-- ── Full Service Cards ── -->
+    <section class="services-full">
+        <div class="container">
+            <h2 class="section-title-center">What I Can Do</h2>
+            <p class="services-intro">Each service is something I genuinely do — not just a list of buzzwords.</p>
+            <div class="services-big-grid">
+
+                <!-- Video Editing -->
+                <div class="svc-card">
+                    <div class="svc-icon-wrap">🎬</div>
+                    <h3>Video Editing</h3>
+                    <p>Cuts, colour grading, motion graphics, transitions — I work in DaVinci Resolve and actually enjoy
+                        the process. I can handle everything from short-form social content to long-form edits.</p>
+                    <div class="svc-tags">
+                        <span class="svc-tag">DaVinci Resolve</span>
+                        <span class="svc-tag">Colour Grading</span>
+                        <span class="svc-tag">Motion Graphics</span>
+                        <span class="svc-tag">Short-form</span>
+                    </div>
+                    <a href="index.html#contact" class="svc-btn">
+                        Inquire →
+                    </a>
+                </div>
+
+                <!-- Web Development -->
+                <div class="svc-card">
+                    <div class="svc-icon-wrap">💻</div>
+                    <h3>Web Development</h3>
+                    <p>Clean HTML, CSS and JavaScript built by hand. I care about how things look, how fast they load,
+                        and how easy they are to navigate. No bloated frameworks unless the project calls for it.</p>
+                    <div class="svc-tags">
+                        <span class="svc-tag">HTML / CSS</span>
+                        <span class="svc-tag">JavaScript</span>
+                        <span class="svc-tag">Responsive</span>
+                        <span class="svc-tag">Performance</span>
+                    </div>
+                    <a href="index.html#contact" class="svc-btn">
+                        Inquire →
+                    </a>
+                </div>
+
+                <!-- UI/UX Design -->
+                <div class="svc-card">
+                    <div class="svc-icon-wrap">🎨</div>
+                    <h3>UI/UX Design</h3>
+                    <p>I design in Figma and Adobe XD. I care a lot about things being easy to use and beautiful to look
+                        at. I can produce wireframes, prototypes, or full design files ready for handoff.</p>
+                    <div class="svc-tags">
+                        <span class="svc-tag">Figma</span>
+                        <span class="svc-tag">Adobe XD</span>
+                        <span class="svc-tag">Wireframing</span>
+                        <span class="svc-tag">Prototyping</span>
+                    </div>
+                    <a href="index.html#contact" class="svc-btn">
+                        Inquire →
+                    </a>
+                </div>
+
+                <!-- Mobile Apps -->
+                <div class="svc-card">
+                    <div class="svc-icon-wrap">📱</div>
+                    <h3>Mobile Apps</h3>
+                    <p>Still learning this one, but I can build functional cross-platform apps and keep improving them.
+                        Great for small projects, MVPs, or internals tools where perfection isn't the priority yet.</p>
+                    <div class="svc-tags">
+                        <span class="svc-tag">Cross-platform</span>
+                        <span class="svc-tag">MVP</span>
+                        <span class="svc-tag">Functional</span>
+                    </div>
+                    <a href="index.html#contact" class="svc-btn">
+                        Inquire →
+                    </a>
+                </div>
+
+                <!-- Backend Development -->
+                <div class="svc-card">
+                    <div class="svc-icon-wrap">⚙️</div>
+                    <h3>Backend Development</h3>
+                    <p>Python, Node.js, basic REST APIs, simple databases. I can wire up the server side of things —
+                        whether that's a contact form, a CMS backend, or a small data-driven application.</p>
+                    <div class="svc-tags">
+                        <span class="svc-tag">Python</span>
+                        <span class="svc-tag">Node.js</span>
+                        <span class="svc-tag">REST API</span>
+                        <span class="svc-tag">Database</span>
+                    </div>
+                    <a href="index.html#contact" class="svc-btn">
+                        Inquire →
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Process ── -->
+    <section class="services-process">
+        <div class="container">
+            <h2 class="section-title-center">How I Work</h2>
+            <p class="process-sub">A simple, transparent process — no over-complicated workflows.</p>
+            <div class="process-steps">
+                <div class="process-step">
+                    <div class="step-number">1</div>
+                    <h4>Discovery</h4>
+                    <p>We talk about what you need, what you're trying to achieve, and what a good result looks like.
+                    </p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">2</div>
+                    <h4>Plan</h4>
+                    <p>I outline the scope, timeline, and deliverables so there are no surprises along the way.</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">3</div>
+                    <h4>Build</h4>
+                    <p>I get to work and keep you updated with progress. Feedback is welcome at every stage.</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">4</div>
+                    <h4>Deliver</h4>
+                    <p>You receive the final files, code, or design — clean, organised, and ready to use.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── FAQ ── -->
+    <section class="services-faq">
+        <div class="container">
+            <h2 class="section-title-center">FAQs</h2>
+            <p class="faq-sub">Common questions — answered honestly.</p>
+            <div class="faq-list">
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        How long does a project usually take?
+                        <span class="faq-chevron">▾</span>
+                    </button>
+                    <div class="faq-answer">
+                        It depends on the scope. A simple website or video edit can be done in a few days. Larger
+                        projects like full web apps or design systems take weeks. I'll always give you an estimate
+                        before we start.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        Do you take on freelance projects?
+                        <span class="faq-chevron">▾</span>
+                    </button>
+                    <div class="faq-answer">
+                        Yes! I'm open to freelance work, collaborations, and one-off projects. Just reach out and we can
+                        figure out if it's a good fit.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        What information do you need to get started?
+                        <span class="faq-chevron">▾</span>
+                    </button>
+                    <div class="faq-answer">
+                        For web projects: what the site is for, any design references you like, and your content. For
+                        video: the raw footage and any style references. For design: a brief and brand guidelines if you
+                        have them.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        Can you work to a tight deadline?
+                        <span class="faq-chevron">▾</span>
+                    </button>
+                    <div class="faq-answer">
+                        I'll always be upfront about what's achievable. If the timeline is tight I'll tell you — and if
+                        I can make it work, I will.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        Do you offer revisions?
+                        <span class="faq-chevron">▾</span>
+                    </button>
+                    <div class="faq-answer">
+                        Yes, reasonable revisions are part of the process. I want you to be happy with the result, so
+                        I'll work with you to get it right.
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ── CTA ── -->
+    <section class="services-cta">
+        <div class="container">
+            <div class="cta-inner">
+                <h2>Ready to start something?</h2>
+                <p>Whether you have a clear brief or just a rough idea — get in touch and let's figure it out together.
+                </p>
+                <div class="cta-btns">
+                    <a href="index.html#contact" class="btn-dark">Get in Touch</a>
+                    <a href="work.html" class="btn-outline-dark">See My Work</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Footer ── -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2026 Adit Bhattarai. All rights reserved.</p>
+                <div class="social-links">
+                    <a href="https://instagram.com/aditbhattarai" class="social-link"
+                        aria-label="Instagram">Instagram</a>
+                    <a href="https://linkedin.com/in/aditbhattarai" class="social-link"
+                        aria-label="LinkedIn">LinkedIn</a>
+                    <a href="https://x.com/aditbhattarai" class="social-link" aria-label="X">X</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Hamburger menu toggle
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('nav-menu');
+        if (hamburger && navMenu) {
+            hamburger.addEventListener('click', () => {
+                hamburger.classList.toggle('active');
+                navMenu.classList.toggle('active');
+            });
+            navMenu.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    hamburger.classList.remove('active');
+                    navMenu.classList.remove('active');
+                });
+            });
+        }
+
+        // Navbar hide-on-scroll (reused from main site)
+        let lastScroll = 0;
+        const navbar = document.querySelector('.navbar');
+        window.addEventListener('scroll', () => {
+            const current = window.pageYOffset;
+            if (current > lastScroll && current > 80) {
+                navbar.classList.add('hidden');
+            } else {
+                navbar.classList.remove('hidden');
+            }
+            lastScroll = current;
+        });
+
+        // FAQ accordion
+        function toggleFaq(btn) {
+            const item = btn.closest('.faq-item');
+            const isOpen = item.classList.contains('open');
+            // Close all
+            document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+            // Toggle current
+            if (!isOpen) item.classList.add('open');
+        }
+    </script>
+</body>
+
+</html>

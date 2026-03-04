@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Works Manager — Adit Bhattarai</title>
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>A</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #0a0b0f;
+            --bg-card: #12131a;
+            --bg-input: #181922;
+            --border: rgba(255, 255, 255, 0.08);
+            --border-focus: #6c63ff;
+            --accent: #6c63ff;
+            --accent2: #a78bfa;
+            --accent-green: #34d399;
+            --accent-red: #f87171;
+            --accent-amber: #fbbf24;
+            --text: #f1f5f9;
+            --text-muted: #94a3b8;
+            --text-dim: #64748b;
+            --radius: 14px;
+            --radius-sm: 10px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* ── Top bar ── */
+        .topbar {
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border);
+            padding: 0.8rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(12px);
+        }
+
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .topbar-logo {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: var(--text);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .topbar-logo span {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .topbar-badge {
+            background: rgba(108, 99, 255, 0.15);
+            color: var(--accent2);
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .topbar-actions {
+            display: flex;
+            gap: 0.6rem;
+        }
+
+        .topbar-btn {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-family: inherit;
+        }
+
+        .topbar-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        /* ── Layout ── */
+        .layout {
+            display: grid;
+            grid-template-columns: 380px 1fr;
+            gap: 0;
+            min-height: calc(100vh - 52px);
+        }
+
+        /* ── Sidebar (Upload form) ── */
+        .sidebar {
+            background: var(--bg-card);
+            border-right: 1px solid var(--border);
+            padding: 1.5rem;
+            overflow-y: auto;
+            position: sticky;
+            top: 52px;
+            height: calc(100vh - 52px);
+        }
+
+        .sidebar-title {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 0.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .sidebar-desc {
+            color: var(--text-dim);
+            font-size: 0.82rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* ── Form ── */
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 0.4rem;
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 0.7rem 0.9rem;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 0.88rem;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.15);
+        }
+
+        .form-input::placeholder,
+        .form-textarea::placeholder {
+            color: var(--text-dim);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%2394a3b8' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+        }
+
+        .form-select option {
+            background: var(--bg-input);
+            color: var(--text);
+        }
+
+        .form-hint {
+            color: var(--text-dim);
+            font-size: 0.75rem;
+            margin-top: 0.3rem;
+        }
+
+        /* Preview */
+        .preview-box {
+            background: var(--bg-input);
+            border: 1px dashed var(--border);
+            border-radius: var(--radius-sm);
+            padding: 0.8rem;
+            margin-top: 0.5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .preview-box img {
+            max-width: 100%;
+            max-height: 150px;
+            border-radius: 6px;
+            object-fit: contain;
+        }
+
+        .preview-box iframe {
+            width: 100%;
+            aspect-ratio: 16/9;
+            border: none;
+            border-radius: 6px;
+        }
+
+        .preview-placeholder {
+            color: var(--text-dim);
+            font-size: 0.82rem;
+        }
+
+        /* Buttons */
+        .btn-primary {
+            width: 100%;
+            padding: 0.8rem;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: white;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 25px rgba(108, 99, 255, 0.35);
+        }
+
+        .btn-secondary {
+            width: 100%;
+            padding: 0.65rem;
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: inherit;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text);
+        }
+
+        /* ── Main content ── */
+        .main {
+            padding: 1.5rem 2rem;
+            overflow-y: auto;
+        }
+
+        .main-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .main-title {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .stats-row {
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        .stat-chip {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 0.4rem 0.9rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        /* ── Category Tabs ── */
+        .category-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.8rem;
+        }
+
+        .cat-tab {
+            background: none;
+            border: none;
+            color: var(--text-dim);
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .cat-tab:hover {
+            color: var(--text-muted);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .cat-tab.active {
+            background: rgba(108, 99, 255, 0.12);
+            color: var(--accent2);
+        }
+
+        /* ── Items Grid ── */
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+
+        .item-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .item-card:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .item-card-media {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: var(--bg-input);
+            overflow: hidden;
+        }
+
+        .item-card-media img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .item-card-media iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .item-card-media .media-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            font-size: 2.5rem;
+            color: var(--text-dim);
+        }
+
+        .item-type-badge {
+            position: absolute;
+            top: 0.6rem;
+            left: 0.6rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            backdrop-filter: blur(6px);
+        }
+
+        .badge-video {
+            background: rgba(239, 68, 68, 0.85);
+            color: white;
+        }
+
+        .badge-photo {
+            background: rgba(52, 211, 153, 0.85);
+            color: white;
+        }
+
+        .item-card-body {
+            padding: 1rem 1.2rem;
+        }
+
+        .item-card-title {
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 0.3rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .item-card-desc {
+            color: var(--text-dim);
+            font-size: 0.82rem;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: 0.6rem;
+        }
+
+        .item-card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.3rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .item-tag {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text-muted);
+            padding: 0.15rem 0.5rem;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+
+        .item-card-actions {
+            display: flex;
+            gap: 0.5rem;
+            padding-top: 0.8rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .item-btn {
+            flex: 1;
+            padding: 0.45rem;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-muted);
+            font-family: inherit;
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.3rem;
+        }
+
+        .item-btn:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text);
+        }
+
+        .item-btn-danger:hover {
+            background: rgba(248, 113, 113, 0.12);
+            color: var(--accent-red);
+            border-color: rgba(248, 113, 113, 0.3);
+        }
+
+        /* ── Empty state ── */
+        .empty-state {
+            text-align: center;
+            padding: 5rem 2rem;
+            grid-column: 1 / -1;
+        }
+
+        .empty-state-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            animation: floaty 3s ease-in-out infinite;
+        }
+
+        @keyframes floaty {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        .empty-state h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+        }
+
+        .empty-state p {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        /* ── Toast ── */
+        .toast-container {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .toast {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 0.8rem 1.2rem;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            animation: toastIn 0.3s ease, toastOut 0.3s ease 2.7s forwards;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .toast-success {
+            border-color: rgba(52, 211, 153, 0.3);
+        }
+
+        .toast-error {
+            border-color: rgba(248, 113, 113, 0.3);
+        }
+
+        @keyframes toastIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes toastOut {
+            from {
+                opacity: 1;
+            }
+
+            to {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+        }
+
+        /* ── Delete Confirm Modal ── */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 9998;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        .modal-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 2rem;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            animation: fadeInUp 0.3s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-box h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-box p {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 0.7rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            font-family: inherit;
+            font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .modal-btn-cancel {
+            background: transparent;
+            color: var(--text-muted);
+        }
+
+        .modal-btn-cancel:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .modal-btn-delete {
+            background: rgba(248, 113, 113, 0.15);
+            color: var(--accent-red);
+            border-color: rgba(248, 113, 113, 0.3);
+        }
+
+        .modal-btn-delete:hover {
+            background: rgba(248, 113, 113, 0.25);
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 960px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: static;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .topbar {
+                padding: 0.8rem 1rem;
+            }
+
+            .main {
+                padding: 1rem;
+            }
+
+            .sidebar {
+                padding: 1rem;
+            }
+
+            .items-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-row {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ── Top bar ── -->
+    <div class="topbar">
+        <div class="topbar-left">
+            <a href="index.html" class="topbar-logo">
+                <span>Works Manager</span>
+            </a>
+            <span class="topbar-badge">ADMIN</span>
+        </div>
+        <div class="topbar-actions">
+            <a href="work.html" class="topbar-btn">View Works</a>
+            <a href="index.html" class="topbar-btn">Portfolio</a>
+        </div>
+    </div>
+
+    <!-- ── Layout ── -->
+    <div class="layout">
+        <!-- ── Sidebar: Upload Form ── -->
+        <div class="sidebar">
+            <h2 class="sidebar-title" id="form-title">Add New Work</h2>
+            <p class="sidebar-desc" id="form-desc">Upload a video or photo to your works gallery.</p>
+
+            <form id="work-form" autocomplete="off">
+                <input type="hidden" id="edit-id">
+
+                <div class="form-group">
+                    <label class="form-label" for="work-type">Type *</label>
+                    <select class="form-select" id="work-type" required>
+                        <option value="">Select type…</option>
+                        <option value="video">Video</option>
+                        <option value="photo">Photo</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="work-title">Title *</label>
+                    <input class="form-input" type="text" id="work-title" placeholder="e.g. Mountain Timelapse"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="work-desc">Description</label>
+                    <textarea class="form-textarea" id="work-desc"
+                        placeholder="Brief description of the work…"></textarea>
+                </div>
+
+                <!-- Video-specific field -->
+                <div class="form-group" id="field-video-url" style="display:none;">
+                    <label class="form-label" for="work-video-url">YouTube URL *</label>
+                    <input class="form-input" type="url" id="work-video-url"
+                        placeholder="https://youtube.com/watch?v=...">
+                    <p class="form-hint">Paste any YouTube video URL — the embed ID will be extracted automatically.</p>
+                    <div class="preview-box" id="video-preview" style="display:none;"></div>
+                </div>
+
+                <!-- Photo-specific field -->
+                <div class="form-group" id="field-image-url" style="display:none;">
+                    <label class="form-label" for="work-image-url">Image URL *</label>
+                    <input class="form-input" type="url" id="work-image-url"
+                        placeholder="https://example.com/photo.jpg">
+                    <p class="form-hint">Direct link to an image (Unsplash, Imgur, Cloudinary, etc.)</p>
+                    <div class="preview-box" id="image-preview" style="display:none;"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="work-tags">Tags</label>
+                    <input class="form-input" type="text" id="work-tags" placeholder="e.g. Premiere Pro, Color Grading">
+                    <p class="form-hint">Comma-separated tags</p>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="work-category">Category / Label</label>
+                    <input class="form-input" type="text" id="work-category"
+                        placeholder="e.g. Nature, Short Film, Portrait">
+                </div>
+
+                <button type="submit" class="btn-primary" id="submit-btn">
+                    Save Work
+                </button>
+                <button type="button" class="btn-secondary" id="cancel-btn" onclick="resetForm()">
+                    Cancel Edit
+                </button>
+            </form>
+        </div>
+
+        <!-- ── Main: Items list ── -->
+        <div class="main">
+            <div class="main-header">
+                <h1 class="main-title">Your Works</h1>
+                <div class="stats-row">
+                    <div class="stat-chip"><span id="stat-videos">0</span> Videos</div>
+                    <div class="stat-chip"><span id="stat-photos">0</span> Photos</div>
+                    <div class="stat-chip"><span id="stat-total">0</span> Total</div>
+                </div>
+            </div>
+
+            <!-- Category filter tabs -->
+            <div class="category-tabs">
+                <button class="cat-tab active" data-filter="all">All</button>
+                <button class="cat-tab" data-filter="video">Videos</button>
+                <button class="cat-tab" data-filter="photo">Photos</button>
+            </div>
+
+            <!-- Items grid -->
+            <div class="items-grid" id="items-grid">
+                <!-- Items render here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Delete Confirmation Modal ── -->
+    <div class="modal-overlay" id="delete-modal">
+        <div class="modal-box">
+            <h3>Delete Work?</h3>
+            <p>This action cannot be undone. The item will be permanently removed from your gallery.</p>
+            <div class="modal-actions">
+                <button class="modal-btn modal-btn-cancel" onclick="closeDeleteModal()">Cancel</button>
+                <button class="modal-btn modal-btn-delete" id="confirm-delete-btn">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Toast container ── -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <script>
+        // ════════════════════════════════════════════════════════════
+        //  STORAGE KEY — shared with work.html
+        // ════════════════════════════════════════════════════════════
+        const STORAGE_KEY = 'adit_works_data';
+
+        // ── Load & Save ──
+        function loadWorks() {
+            try {
+                return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            } catch { return []; }
+        }
+
+        function saveWorks(works) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(works));
+        }
+
+        // ── YouTube ID extraction ──
+        function extractYouTubeID(url) {
+            if (!url) return null;
+            const m = url.match(/^.*(youtu\.be\/|v\/|embed\/|watch\?v=|&v=)([^#&?]*).*/);
+            return (m && m[2].length === 11) ? m[2] : null;
+        }
+
+        // ── Escape HTML ──
+        function esc(text) {
+            const d = document.createElement('div');
+            d.textContent = text || '';
+            return d.innerHTML;
+        }
+
+        // ════════════════════════════════════════════════════════════
+        //  FORM LOGIC
+        // ════════════════════════════════════════════════════════════
+        const form = document.getElementById('work-form');
+        const typeSelect = document.getElementById('work-type');
+        const videoUrlField = document.getElementById('field-video-url');
+        const imageUrlField = document.getElementById('field-image-url');
+        const videoUrlInput = document.getElementById('work-video-url');
+        const imageUrlInput = document.getElementById('work-image-url');
+        const videoPreview = document.getElementById('video-preview');
+        const imagePreview = document.getElementById('image-preview');
+
+        // Show/hide fields based on type
+        typeSelect.addEventListener('change', () => {
+            const type = typeSelect.value;
+            videoUrlField.style.display = type === 'video' ? 'block' : 'none';
+            imageUrlField.style.display = type === 'photo' ? 'block' : 'none';
+        });
+
+        // Video URL preview
+        videoUrlInput.addEventListener('input', () => {
+            const vid = extractYouTubeID(videoUrlInput.value);
+            if (vid) {
+                videoPreview.innerHTML = `<iframe src="https://www.youtube.com/embed/${vid}" allowfullscreen></iframe>`;
+                videoPreview.style.display = 'block';
+            } else {
+                videoPreview.style.display = 'none';
+            }
+        });
+
+        // Image URL preview
+        imageUrlInput.addEventListener('input', () => {
+            const url = imageUrlInput.value.trim();
+            if (url) {
+                imagePreview.innerHTML = `<img src="${esc(url)}" alt="Preview" onerror="this.parentElement.innerHTML='<span class=preview-placeholder>Could not load image</span>'">`;
+                imagePreview.style.display = 'block';
+            } else {
+                imagePreview.style.display = 'none';
+            }
+        });
+
+        // Submit form
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const type = typeSelect.value;
+            const title = document.getElementById('work-title').value.trim();
+            const desc = document.getElementById('work-desc').value.trim();
+            const tags = document.getElementById('work-tags').value.trim();
+            const category = document.getElementById('work-category').value.trim();
+            const editId = document.getElementById('edit-id').value;
+
+            if (!type || !title) {
+                showToast('Please fill in required fields.', 'error');
+                return;
+            }
+
+            if (type === 'video' && !extractYouTubeID(videoUrlInput.value)) {
+                showToast('Please enter a valid YouTube URL.', 'error');
+                return;
+            }
+
+            if (type === 'photo' && !imageUrlInput.value.trim()) {
+                showToast('Please enter an image URL.', 'error');
+                return;
+            }
+
+            const work = {
+                id: editId ? editId : Date.now().toString(),
+                type,
+                title,
+                description: desc,
+                tags,
+                category,
+                videoUrl: type === 'video' ? videoUrlInput.value.trim() : '',
+                imageUrl: type === 'photo' ? imageUrlInput.value.trim() : '',
+                createdAt: editId ? undefined : new Date().toISOString()
+            };
+
+            const works = loadWorks();
+
+            if (editId) {
+                const idx = works.findIndex(w => w.id === editId);
+                if (idx !== -1) {
+                    work.createdAt = works[idx].createdAt;
+                    works[idx] = work;
+                }
+                showToast('Work updated successfully!', 'success');
+            } else {
+                work.createdAt = new Date().toISOString();
+                works.unshift(work);
+                showToast('Work added successfully!', 'success');
+            }
+
+            saveWorks(works);
+            resetForm();
+            renderItems();
+        });
+
+        function resetForm() {
+            form.reset();
+            document.getElementById('edit-id').value = '';
+            document.getElementById('form-title').textContent = 'Add New Work';
+            document.getElementById('form-desc').textContent = 'Upload a video or photo to your works gallery.';
+            document.getElementById('submit-btn').innerHTML = 'Save Work';
+            document.getElementById('cancel-btn').style.display = 'none';
+            videoUrlField.style.display = 'none';
+            imageUrlField.style.display = 'none';
+            videoPreview.style.display = 'none';
+            imagePreview.style.display = 'none';
+        }
+
+        function editWork(id) {
+            const works = loadWorks();
+            const work = works.find(w => w.id === id);
+            if (!work) return;
+
+            document.getElementById('edit-id').value = work.id;
+            document.getElementById('work-type').value = work.type;
+            document.getElementById('work-title').value = work.title;
+            document.getElementById('work-desc').value = work.description || '';
+            document.getElementById('work-tags').value = work.tags || '';
+            document.getElementById('work-category').value = work.category || '';
+
+            // Show relevant fields
+            typeSelect.dispatchEvent(new Event('change'));
+
+            if (work.type === 'video') {
+                videoUrlInput.value = work.videoUrl || '';
+                videoUrlInput.dispatchEvent(new Event('input'));
+            } else if (work.type === 'photo') {
+                imageUrlInput.value = work.imageUrl || '';
+                imageUrlInput.dispatchEvent(new Event('input'));
+            }
+
+            document.getElementById('form-title').textContent = 'Edit Work';
+            document.getElementById('form-desc').textContent = 'Modify the details below and save.';
+            document.getElementById('submit-btn').innerHTML = 'Update Work';
+            document.getElementById('cancel-btn').style.display = 'block';
+
+            // Scroll to form on mobile
+            document.querySelector('.sidebar').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // ════════════════════════════════════════════════════════════
+        //  DELETE
+        // ════════════════════════════════════════════════════════════
+        let pendingDeleteId = null;
+
+        function confirmDelete(id) {
+            pendingDeleteId = id;
+            document.getElementById('delete-modal').classList.add('open');
+        }
+
+        function closeDeleteModal() {
+            pendingDeleteId = null;
+            document.getElementById('delete-modal').classList.remove('open');
+        }
+
+        document.getElementById('confirm-delete-btn').addEventListener('click', () => {
+            if (!pendingDeleteId) return;
+            let works = loadWorks();
+            works = works.filter(w => w.id !== pendingDeleteId);
+            saveWorks(works);
+            closeDeleteModal();
+            renderItems();
+            showToast('Work deleted.', 'success');
+        });
+
+        // ════════════════════════════════════════════════════════════
+        //  RENDER ITEMS
+        // ════════════════════════════════════════════════════════════
+        let currentFilter = 'all';
+
+        function renderItems() {
+            const works = loadWorks();
+            const grid = document.getElementById('items-grid');
+
+            // Stats
+            const videos = works.filter(w => w.type === 'video');
+            const photos = works.filter(w => w.type === 'photo');
+            document.getElementById('stat-videos').textContent = videos.length;
+            document.getElementById('stat-photos').textContent = photos.length;
+            document.getElementById('stat-total').textContent = works.length;
+
+            // Filter
+            const filtered = currentFilter === 'all'
+                ? works
+                : works.filter(w => w.type === currentFilter);
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon"></div>
+                        <h3>No ${currentFilter === 'all' ? 'works' : currentFilter + 's'} yet</h3>
+                        <p>Use the form on the left to add your first ${currentFilter === 'all' ? 'work' : currentFilter}.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = filtered.map(work => {
+                let media = '';
+                if (work.type === 'video') {
+                    const vid = extractYouTubeID(work.videoUrl);
+                    media = vid
+                        ? `<iframe src="https://www.youtube.com/embed/${vid}" loading="lazy" allowfullscreen></iframe>`
+                        : `<div class="media-placeholder">Video</div>`;
+                } else {
+                    media = work.imageUrl
+                        ? `<img src="${esc(work.imageUrl)}" alt="${esc(work.title)}" loading="lazy">`
+                        : `<div class="media-placeholder">Photo</div>`;
+                }
+
+                const tags = work.tags
+                    ? work.tags.split(',').map(t => `<span class="item-tag">${esc(t.trim())}</span>`).join('')
+                    : '';
+
+                return `
+                    <div class="item-card">
+                        <div class="item-card-media">
+                            ${media}
+                            <span class="item-type-badge ${work.type === 'video' ? 'badge-video' : 'badge-photo'}">
+                                ${work.type === 'video' ? 'Video' : 'Photo'}
+                            </span>
+                        </div>
+                        <div class="item-card-body">
+                            <div class="item-card-title">${esc(work.title)}</div>
+                            ${work.description ? `<div class="item-card-desc">${esc(work.description)}</div>` : ''}
+                            ${tags ? `<div class="item-card-tags">${tags}</div>` : ''}
+                            ${work.category ? `<span class="item-tag" style="margin-bottom:0.6rem;display:inline-block;">${esc(work.category)}</span>` : ''}
+                            <div class="item-card-actions">
+                                <button class="item-btn" onclick="editWork('${work.id}')">Edit</button>
+                                <button class="item-btn item-btn-danger" onclick="confirmDelete('${work.id}')">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ── Category tab switching ──
+        document.querySelectorAll('.cat-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                currentFilter = tab.dataset.filter;
+                renderItems();
+            });
+        });
+
+        // ════════════════════════════════════════════════════════════
+        //  TOAST NOTIFICATIONS
+        // ════════════════════════════════════════════════════════════
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.innerHTML = message;
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 3200);
+        }
+
+        // ── Initial render ──
+        renderItems();
+    </script>
+</body>
+
+</html>

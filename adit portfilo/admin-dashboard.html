@@ -1,0 +1,1813 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard — Adit Bhattarai</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚙️</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        :root {
+            --sidebar-w: 260px;
+            --bg: #080b11;
+            --sidebar-bg: #0d1117;
+            --card-bg: rgba(255, 255, 255, 0.04);
+            --border: rgba(255, 255, 255, 0.08);
+            --accent: #6c63ff;
+            --accent2: #a78bfa;
+            --text: #f1f5f9;
+            --muted: #64748b;
+            --muted2: #94a3b8;
+            --red: #f87171;
+            --green: #34d399;
+            --yellow: #fbbf24;
+            --blue: #38bdf8;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            overflow-x: hidden
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: var(--sidebar-w);
+            background: var(--sidebar-bg);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            z-index: 100;
+            transition: transform .3s ease
+        }
+
+        .sidebar-logo {
+            padding: 24px 20px;
+            border-bottom: 1px solid var(--border)
+        }
+
+        .sidebar-logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            border-radius: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            margin-bottom: 8px
+        }
+
+        .sidebar-logo-name {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text)
+        }
+
+        .sidebar-logo-sub {
+            font-size: 0.7rem;
+            color: var(--muted);
+            margin-top: 2px
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 16px 12px;
+            overflow-y: auto
+        }
+
+        .nav-section {
+            margin-bottom: 24px
+        }
+
+        .nav-section-title {
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--muted);
+            padding: 0 8px;
+            margin-bottom: 8px
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            color: var(--muted2);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all .2s;
+            text-decoration: none;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text)
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, rgba(108, 99, 255, .2), rgba(167, 139, 250, .1));
+            color: var(--accent2);
+            border: 1px solid rgba(108, 99, 255, .2)
+        }
+
+        .nav-item .nav-icon {
+            font-size: 16px;
+            width: 20px;
+            text-align: center
+        }
+
+        .nav-item .nav-badge {
+            margin-left: auto;
+            background: var(--accent);
+            color: white;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 20px
+        }
+
+        .sidebar-bottom {
+            padding: 16px 12px;
+            border-top: 1px solid var(--border)
+        }
+
+        .user-chip {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            background: var(--card-bg);
+            border: 1px solid var(--border)
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+            color: white;
+            flex-shrink: 0
+        }
+
+        .user-email {
+            font-size: 0.75rem;
+            color: var(--muted2);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap
+        }
+
+        .user-role {
+            font-size: 0.65rem;
+            color: var(--accent2);
+            font-weight: 600
+        }
+
+        /* MAIN */
+        .main {
+            margin-left: var(--sidebar-w);
+            flex: 1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column
+        }
+
+        .topbar {
+            height: 60px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            padding: 0 28px;
+            gap: 16px;
+            background: rgba(8, 11, 17, .8);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 50
+        }
+
+        .topbar-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text);
+            flex: 1
+        }
+
+        .topbar-subtitle {
+            font-size: 0.75rem;
+            color: var(--muted);
+            margin-top: 1px
+        }
+
+        .hamburger {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--muted2);
+            font-size: 20px;
+            cursor: pointer
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all .2s
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: white
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(108, 99, 255, .35)
+        }
+
+        .btn-danger {
+            background: rgba(248, 113, 113, .1);
+            color: var(--red);
+            border: 1px solid rgba(248, 113, 113, .25)
+        }
+
+        .btn-danger:hover {
+            background: rgba(248, 113, 113, .2)
+        }
+
+        .btn-ghost {
+            background: var(--card-bg);
+            color: var(--muted2);
+            border: 1px solid var(--border)
+        }
+
+        .btn-ghost:hover {
+            background: rgba(255, 255, 255, .08);
+            color: var(--text)
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 0.75rem
+        }
+
+        .content {
+            padding: 28px;
+            flex: 1
+        }
+
+        /* SECTIONS */
+        .section {
+            display: none
+        }
+
+        .section.active {
+            display: block
+        }
+
+        /* STATS GRID */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 28px
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 22px;
+            transition: border-color .2s
+        }
+
+        .stat-card:hover {
+            border-color: rgba(108, 99, 255, .3)
+        }
+
+        .stat-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px
+        }
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px
+        }
+
+        .stat-icon.purple {
+            background: rgba(108, 99, 255, .15)
+        }
+
+        .stat-icon.green {
+            background: rgba(52, 211, 153, .15)
+        }
+
+        .stat-icon.yellow {
+            background: rgba(251, 191, 36, .15)
+        }
+
+        .stat-icon.blue {
+            background: rgba(56, 189, 248, .15)
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text);
+            line-height: 1
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--muted);
+            margin-top: 6px
+        }
+
+        .stat-change {
+            font-size: 0.75rem;
+            margin-top: 8px;
+            color: var(--green)
+        }
+
+        /* CARDS */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border)
+        }
+
+        .card-title-text {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text)
+        }
+
+        .card-body {
+            padding: 24px
+        }
+
+        /* TABLE */
+        .table-wrap {
+            overflow-x: auto
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse
+        }
+
+        th {
+            text-align: left;
+            padding: 10px 16px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--muted);
+            border-bottom: 1px solid var(--border)
+        }
+
+        td {
+            padding: 12px 16px;
+            font-size: 0.85rem;
+            border-bottom: 1px solid rgba(255, 255, 255, .04);
+            vertical-align: middle
+        }
+
+        tr:last-child td {
+            border-bottom: none
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, .025)
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600
+        }
+
+        .badge-green {
+            background: rgba(52, 211, 153, .1);
+            color: var(--green);
+            border: 1px solid rgba(52, 211, 153, .2)
+        }
+
+        .badge-yellow {
+            background: rgba(251, 191, 36, .1);
+            color: var(--yellow);
+            border: 1px solid rgba(251, 191, 36, .2)
+        }
+
+        .badge-blue {
+            background: rgba(56, 189, 248, .1);
+            color: var(--blue);
+            border: 1px solid rgba(56, 189, 248, .2)
+        }
+
+        .badge-purple {
+            background: rgba(167, 139, 250, .1);
+            color: var(--accent2);
+            border: 1px solid rgba(167, 139, 250, .2)
+        }
+
+        /* ACTION ROW */
+        .action-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 12px
+        }
+
+        .search-wrap {
+            position: relative;
+            flex: 1;
+            max-width: 320px
+        }
+
+        .search-wrap input {
+            width: 100%;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 9px 12px 9px 36px;
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            outline: none;
+            transition: border-color .2s
+        }
+
+        .search-wrap input:focus {
+            border-color: var(--accent)
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--muted);
+            font-size: 14px
+        }
+
+        /* MODAL */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .7);
+            backdrop-filter: blur(6px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px
+        }
+
+        .modal-overlay.open {
+            display: flex;
+            animation: fadeIn .2s ease
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0
+            }
+
+            to {
+                opacity: 1
+            }
+        }
+
+        .modal {
+            background: #0d1117;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 580px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp .3s cubic-bezier(.16, 1, .3, 1)
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 24px;
+            border-bottom: 1px solid var(--border)
+        }
+
+        .modal-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text)
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--muted);
+            font-size: 20px;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 6px;
+            transition: color .2s
+        }
+
+        .modal-close:hover {
+            color: var(--text)
+        }
+
+        .modal-body {
+            padding: 24px
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            padding: 20px 24px;
+            border-top: 1px solid var(--border)
+        }
+
+        /* FORM */
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px
+        }
+
+        .form-group {
+            margin-bottom: 18px
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--muted2);
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            margin-bottom: 8px
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            background: rgba(255, 255, 255, .05);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 11px 14px;
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.875rem;
+            outline: none;
+            transition: border-color .2s
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--accent)
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+            line-height: 1.5
+        }
+
+        .form-group select option {
+            background: #0d1117
+        }
+
+        .checkbox-wrap {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer
+        }
+
+        .checkbox-wrap input[type=checkbox] {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--accent)
+        }
+
+        /* CONFIRM DIALOG */
+        .confirm-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .8);
+            backdrop-filter: blur(6px);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center
+        }
+
+        .confirm-overlay.open {
+            display: flex
+        }
+
+        .confirm-box {
+            background: #0d1117;
+            border: 1px solid rgba(248, 113, 113, .3);
+            border-radius: 16px;
+            padding: 32px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            animation: slideUp .25s ease
+        }
+
+        .confirm-icon {
+            font-size: 48px;
+            margin-bottom: 16px
+        }
+
+        .confirm-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 8px
+        }
+
+        .confirm-desc {
+            font-size: 0.875rem;
+            color: var(--muted2);
+            margin-bottom: 24px;
+            line-height: 1.5
+        }
+
+        .confirm-btns {
+            display: flex;
+            gap: 12px;
+            justify-content: center
+        }
+
+        /* TOAST */
+        .toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 3000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px
+        }
+
+        .toast {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 18px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            min-width: 260px;
+            animation: toastIn .3s ease;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, .5)
+        }
+
+        .toast-success {
+            background: #0f271f;
+            border: 1px solid rgba(52, 211, 153, .3);
+            color: var(--green)
+        }
+
+        .toast-error {
+            background: #27100e;
+            border: 1px solid rgba(248, 113, 113, .3);
+            color: var(--red)
+        }
+
+        .toast-info {
+            background: #0f1627;
+            border: 1px solid rgba(56, 189, 248, .3);
+            color: var(--blue)
+        }
+
+        @keyframes toastIn {
+            from {
+                opacity: 0;
+                transform: translateX(20px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0)
+            }
+        }
+
+        /* ACTIVITY */
+        .activity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 14px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, .04)
+        }
+
+        .activity-item:last-child {
+            border-bottom: none
+        }
+
+        .activity-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-top: 6px;
+            flex-shrink: 0
+        }
+
+        .activity-dot.purple {
+            background: var(--accent)
+        }
+
+        .activity-dot.green {
+            background: var(--green)
+        }
+
+        .activity-dot.blue {
+            background: var(--blue)
+        }
+
+        .activity-text {
+            font-size: 0.85rem;
+            color: var(--muted2)
+        }
+
+        .activity-time {
+            font-size: 0.75rem;
+            color: var(--muted);
+            margin-top: 3px
+        }
+
+        /* EMPTY STATE */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--muted)
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: .6
+        }
+
+        .empty-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--muted2);
+            margin-bottom: 6px
+        }
+
+        .empty-desc {
+            font-size: 0.85rem
+        }
+
+        /* LOADING */
+        .loading-state {
+            text-align: center;
+            padding: 40px;
+            color: var(--muted)
+        }
+
+        .spin {
+            display: inline-block;
+            width: 28px;
+            height: 28px;
+            border: 3px solid rgba(108, 99, 255, .2);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin .6s linear infinite;
+            margin-bottom: 12px
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg)
+            }
+        }
+
+        /* MEDIA GRID */
+        .media-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 16px
+        }
+
+        .media-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: border-color .2s
+        }
+
+        .media-card:hover {
+            border-color: rgba(108, 99, 255, .3)
+        }
+
+        .media-thumbnail {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            background: #1a1f2e;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px
+        }
+
+        .media-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover
+        }
+
+        .media-info {
+            padding: 10px 12px
+        }
+
+        .media-name {
+            font-size: 0.75rem;
+            color: var(--muted2);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis
+        }
+
+        .media-size {
+            font-size: 0.7rem;
+            color: var(--muted);
+            margin-top: 2px
+        }
+
+        /* SETTINGS */
+        .settings-section {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px
+        }
+
+        .settings-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px
+        }
+
+        /* UPLOAD ZONE */
+        .upload-zone {
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all .2s;
+            color: var(--muted)
+        }
+
+        .upload-zone:hover,
+        .upload-zone.drag {
+            border-color: var(--accent);
+            background: rgba(108, 99, 255, .05);
+            color: var(--accent2)
+        }
+
+        .upload-zone input {
+            display: none
+        }
+
+        /* RESPONSIVE */
+        @media(max-width:768px) {
+            .sidebar {
+                transform: translateX(-100%)
+            }
+
+            .sidebar.open {
+                transform: translateX(0)
+            }
+
+            .main {
+                margin-left: 0
+            }
+
+            .hamburger {
+                display: block
+            }
+
+            .form-row {
+                grid-template-columns: 1fr
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr 1fr
+            }
+        }
+
+        @media(max-width:480px) {
+            .stats-grid {
+                grid-template-columns: 1fr
+            }
+
+            .content {
+                padding: 16px
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-logo">
+            <div class="sidebar-logo-icon">⚙️</div>
+            <div class="sidebar-logo-name">Admin Portal</div>
+            <div class="sidebar-logo-sub">Adit Bhattarai</div>
+        </div>
+
+        <div class="sidebar-nav">
+            <div class="nav-section">
+                <div class="nav-section-title">Overview</div>
+                <button class="nav-item active" onclick="showSection('dashboard')" id="nav-dashboard">
+                    <span class="nav-icon">📊</span> Dashboard
+                </button>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">Content</div>
+                <button class="nav-item" onclick="showSection('posts')" id="nav-posts">
+                    <span class="nav-icon">📝</span> Blog Posts
+                </button>
+                <button class="nav-item" onclick="showSection('works')" id="nav-works">
+                    <span class="nav-icon">🎨</span> Works / Projects
+                </button>
+                <button class="nav-item" onclick="showSection('media')" id="nav-media">
+                    <span class="nav-icon">🖼️</span> Media
+                </button>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">Manage</div>
+                <button class="nav-item" onclick="showSection('messages')" id="nav-messages">
+                    <span class="nav-icon">✉️</span> Messages
+                    <span class="nav-badge" id="msg-badge">0</span>
+                </button>
+                <button class="nav-item" onclick="showSection('settings')" id="nav-settings">
+                    <span class="nav-icon">⚙️</span> Settings
+                </button>
+            </div>
+        </div>
+
+        <div class="sidebar-bottom">
+            <div class="user-chip">
+                <div class="user-avatar" id="user-avatar">A</div>
+                <div>
+                    <div class="user-email" id="user-email-display">admin</div>
+                    <div class="user-role">Administrator</div>
+                </div>
+            </div>
+            <button class="btn btn-ghost" style="width:100%;margin-top:10px;justify-content:center" onclick="logout()">
+                🚪 Sign Out
+            </button>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <div class="main">
+        <header class="topbar">
+            <button class="hamburger" onclick="toggleSidebar()">☰</button>
+            <div>
+                <div class="topbar-title" id="topbar-title">Dashboard</div>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="handleTopbarAction()" id="topbar-action-btn"
+                style="display:none">
+                ➕ New Post
+            </button>
+            <a href="/" target="_blank" class="btn btn-ghost btn-sm">🌐 View Site</a>
+        </header>
+
+        <div class="content">
+
+            <!-- ─── DASHBOARD ─── -->
+            <div class="section active" id="section-dashboard">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon purple">📝</div>
+                        </div>
+                        <div class="stat-number" id="stat-posts">—</div>
+                        <div class="stat-label">Blog Posts</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon green">🎨</div>
+                        </div>
+                        <div class="stat-number" id="stat-works">—</div>
+                        <div class="stat-label">Projects / Works</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon yellow">✉️</div>
+                        </div>
+                        <div class="stat-number" id="stat-contacts">—</div>
+                        <div class="stat-label">Messages</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon blue">👁️</div>
+                        </div>
+                        <div class="stat-number" id="stat-visits">—</div>
+                        <div class="stat-label">Total Visits</div>
+                    </div>
+                </div>
+
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title-text">Recent Messages</span>
+                            <button class="btn btn-ghost btn-sm" onclick="showSection('messages')">View All</button>
+                        </div>
+                        <div class="card-body" id="recent-messages-list">
+                            <div class="loading-state">
+                                <div class="spin"></div>
+                                <div>Loading…</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title-text">Recent Visits</span>
+                        </div>
+                        <div class="card-body" id="recent-visits-list">
+                            <div class="loading-state">
+                                <div class="spin"></div>
+                                <div>Loading…</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ─── POSTS ─── -->
+            <div class="section" id="section-posts">
+                <div class="action-row">
+                    <div class="search-wrap">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" placeholder="Search posts…" oninput="filterPosts(this.value)"
+                            id="search-posts">
+                    </div>
+                    <button class="btn btn-primary" onclick="openPostModal()">➕ New Post</button>
+                </div>
+                <div class="card">
+                    <div class="table-wrap" id="posts-table-wrap">
+                        <div class="loading-state">
+                            <div class="spin"></div>
+                            <div>Loading…</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ─── WORKS ─── -->
+            <div class="section" id="section-works">
+                <div class="action-row">
+                    <div class="search-wrap">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" placeholder="Search projects…" oninput="filterWorks(this.value)">
+                    </div>
+                    <button class="btn btn-primary" onclick="openWorkModal()">➕ New Project</button>
+                </div>
+                <div class="card">
+                    <div class="table-wrap" id="works-table-wrap">
+                        <div class="loading-state">
+                            <div class="spin"></div>
+                            <div>Loading…</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ─── MEDIA ─── -->
+            <div class="section" id="section-media">
+                <div class="action-row">
+                    <span style="color:var(--muted2);font-size:.875rem">Manage uploaded images & files</span>
+                    <button class="btn btn-primary" onclick="document.getElementById('file-upload-input').click()">📤
+                        Upload Files</button>
+                </div>
+                <div class="upload-zone" id="upload-zone"
+                    onclick="document.getElementById('file-upload-input').click()">
+                    <input type="file" id="file-upload-input" multiple accept="image/*"
+                        onchange="handleFileUpload(this.files)">
+                    <div style="font-size:32px;margin-bottom:12px">📁</div>
+                    <div style="font-size:.9rem;color:var(--muted2);font-weight:500">Click or drag files here to upload
+                    </div>
+                    <div style="font-size:.75rem;color:var(--muted);margin-top:6px">PNG, JPG, GIF, WebP up to 10MB</div>
+                </div>
+                <div style="margin-top:24px">
+                    <div class="media-grid" id="media-grid">
+                        <div class="loading-state" style="grid-column:1/-1">
+                            <div class="spin"></div>
+                            <div>Loading…</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ─── MESSAGES ─── -->
+            <div class="section" id="section-messages">
+                <div class="action-row">
+                    <div class="search-wrap">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" placeholder="Search messages…" oninput="filterContacts(this.value)">
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="table-wrap" id="contacts-table-wrap">
+                        <div class="loading-state">
+                            <div class="spin"></div>
+                            <div>Loading…</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ─── SETTINGS ─── -->
+            <div class="section" id="section-settings">
+                <div class="settings-section">
+                    <div class="settings-title">🔐 Change Admin Password</div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Current Password</label>
+                            <input type="password" id="set-cur-pass" placeholder="••••••••">
+                        </div>
+                        <div class="form-group">
+                            <label>New Password</label>
+                            <input type="password" id="set-new-pass" placeholder="••••••••">
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="changePassword()">Save Password</button>
+                </div>
+
+                <div class="settings-section">
+                    <div class="settings-title">🏠 Homepage Bio</div>
+                    <div class="form-group">
+                        <label>Bio Text</label>
+                        <textarea id="set-bio" rows="4" placeholder="Write your bio here…"></textarea>
+                    </div>
+                    <button class="btn btn-primary" onclick="saveBio()">Save Bio</button>
+                </div>
+            </div>
+
+        </div><!-- /content -->
+    </div><!-- /main -->
+
+    <!-- POST MODAL -->
+    <div class="modal-overlay" id="post-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title" id="post-modal-title">New Blog Post</div>
+                <button class="modal-close" onclick="closeModal('post-modal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="post-id">
+                <div class="form-group">
+                    <label>Title *</label>
+                    <input type="text" id="post-title" placeholder="Post title">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select id="post-category">
+                            <option value="General">General</option>
+                            <option value="Tech">Tech</option>
+                            <option value="Design">Design</option>
+                            <option value="Life">Life</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select id="post-status">
+                            <option value="draft">Draft</option>
+                            <option value="published">Published</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Excerpt</label>
+                    <textarea id="post-excerpt" rows="2" placeholder="Short summary…"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Content</label>
+                    <textarea id="post-content" rows="6" placeholder="Write your post content here…"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Cover Image URL</label>
+                    <input type="text" id="post-image" placeholder="https://…">
+                </div>
+                <div class="form-group">
+                    <label>Tags (comma separated)</label>
+                    <input type="text" id="post-tags" placeholder="javascript, design, css">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-ghost" onclick="closeModal('post-modal')">Cancel</button>
+                <button class="btn btn-primary" onclick="savePost()">💾 Save Post</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- WORK MODAL -->
+    <div class="modal-overlay" id="work-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title" id="work-modal-title">New Project</div>
+                <button class="modal-close" onclick="closeModal('work-modal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="work-id">
+                <div class="form-group">
+                    <label>Title *</label>
+                    <input type="text" id="work-title" placeholder="Project title">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Category *</label>
+                        <select id="work-category">
+                            <option value="Web">Web</option>
+                            <option value="Mobile">Mobile</option>
+                            <option value="Design">Design</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Featured</label>
+                        <select id="work-featured">
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="work-description" rows="3" placeholder="Describe the project…"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Image URL</label>
+                    <input type="text" id="work-image" placeholder="https://…">
+                </div>
+                <div class="form-group">
+                    <label>Project URL</label>
+                    <input type="text" id="work-url" placeholder="https://…">
+                </div>
+                <div class="form-group">
+                    <label>Tags (comma separated)</label>
+                    <input type="text" id="work-tags" placeholder="react, nodejs, design">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-ghost" onclick="closeModal('work-modal')">Cancel</button>
+                <button class="btn btn-primary" onclick="saveWork()">💾 Save Project</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONFIRM DIALOG -->
+    <div class="confirm-overlay" id="confirm-overlay">
+        <div class="confirm-box">
+            <div class="confirm-icon">🗑️</div>
+            <div class="confirm-title">Confirm Delete</div>
+            <div class="confirm-desc" id="confirm-desc">Are you sure you want to delete this item? This action cannot be
+                undone.</div>
+            <div class="confirm-btns">
+                <button class="btn btn-ghost" onclick="closeConfirm()">Cancel</button>
+                <button class="btn btn-danger" onclick="executeConfirm()">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST CONTAINER -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <script>
+        // ─── AUTH GUARD ───────────────────────────────────────────────────
+        const token = sessionStorage.getItem('adminToken');
+        if (!token || sessionStorage.getItem('adminLoggedIn') !== 'true') {
+            window.location.replace('/admin-login.html');
+        }
+
+        // ─── INIT ───────────────────────────────────────────────────────────
+        const adminEmail = sessionStorage.getItem('adminEmail') || 'admin';
+        document.getElementById('user-email-display').textContent = adminEmail;
+        document.getElementById('user-avatar').textContent = adminEmail[0].toUpperCase();
+
+        function authHeaders() {
+            return { 'Content-Type': 'application/json', 'x-admin-token': token };
+        }
+
+        // ─── NAVIGATION ────────────────────────────────────────────────────
+        const sections = ['dashboard', 'posts', 'works', 'media', 'messages', 'settings'];
+        const sectionTitles = {
+            dashboard: 'Dashboard', posts: 'Blog Posts', works: 'Works / Projects',
+            media: 'Media Library', messages: 'Contact Messages', settings: 'Settings'
+        };
+        const actionBtns = { posts: { label: '➕ New Post', fn: 'openPostModal' }, works: { label: '➕ New Project', fn: 'openWorkModal' } };
+
+        function showSection(name) {
+            sections.forEach(s => {
+                document.getElementById('section-' + s).classList.toggle('active', s === name);
+                const nav = document.getElementById('nav-' + s);
+                if (nav) nav.classList.toggle('active', s === name);
+            });
+            document.getElementById('topbar-title').textContent = sectionTitles[name] || name;
+            const ab = document.getElementById('topbar-action-btn');
+            if (actionBtns[name]) {
+                ab.style.display = 'inline-flex';
+                ab.textContent = actionBtns[name].label;
+                ab.onclick = () => window[actionBtns[name].fn]();
+            } else { ab.style.display = 'none'; }
+            if (window.innerWidth <= 768) document.getElementById('sidebar').classList.remove('open');
+            if (name === 'dashboard') loadDashboard();
+            else if (name === 'posts') loadPosts();
+            else if (name === 'works') loadWorks();
+            else if (name === 'messages') loadContacts();
+            else if (name === 'media') loadMedia();
+        }
+
+        function handleTopbarAction() { }
+        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
+
+        // ─── TOAST ─────────────────────────────────────────────────────────
+        function toast(msg, type = 'success') {
+            const c = document.getElementById('toast-container');
+            const t = document.createElement('div');
+            t.className = `toast toast-${type}`;
+            const icons = { success: '✅', error: '❌', info: 'ℹ️' };
+            t.innerHTML = `<span>${icons[type]}</span><span>${msg}</span>`;
+            c.appendChild(t);
+            setTimeout(() => { t.style.opacity = '0'; t.style.transform = 'translateX(20px)'; t.style.transition = 'all .3s'; setTimeout(() => t.remove(), 300); }, 3000);
+        }
+
+        // ─── CONFIRM ───────────────────────────────────────────────────────
+        let confirmCallback = null;
+        function confirmDelete(desc, cb) {
+            document.getElementById('confirm-desc').textContent = desc;
+            document.getElementById('confirm-overlay').classList.add('open');
+            confirmCallback = cb;
+        }
+        function closeConfirm() { document.getElementById('confirm-overlay').classList.remove('open'); confirmCallback = null; }
+        function executeConfirm() { if (confirmCallback) confirmCallback(); closeConfirm(); }
+
+        // ─── MODAL ─────────────────────────────────────────────────────────
+        function openModal(id) { document.getElementById(id).classList.add('open'); }
+        function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+        // ─── DASHBOARD ─────────────────────────────────────────────────────
+        async function loadDashboard() {
+            try {
+                const [stats, contacts, posts] = await Promise.all([
+                    fetch('/api/stats', { headers: authHeaders() }).then(r => r.json()),
+                    fetch('/api/contacts', { headers: authHeaders() }).then(r => r.json()),
+                    fetch('/api/posts', { headers: authHeaders() }).then(r => r.json())
+                ]);
+
+                if (stats.success) {
+                    document.getElementById('stat-visits').textContent = stats.stats.totalVisits ?? 0;
+                    document.getElementById('stat-contacts').textContent = stats.stats.totalContacts ?? 0;
+                    document.getElementById('msg-badge').textContent = stats.stats.totalContacts ?? 0;
+                }
+
+                const postsData = posts.success ? posts.posts : [];
+                const worksR = await fetch('/api/works', { headers: authHeaders() }).then(r => r.json());
+                document.getElementById('stat-posts').textContent = postsData.length;
+                document.getElementById('stat-works').textContent = (worksR.success ? worksR.works.length : 0);
+
+                // Recent messages
+                const msgEl = document.getElementById('recent-messages-list');
+                const msgs = contacts.success ? contacts.contacts.slice(0, 4) : [];
+                msgEl.innerHTML = msgs.length ? `<div class="activity-list">${msgs.map(m => `
+      <div class="activity-item">
+        <div class="activity-dot yellow"></div>
+        <div>
+          <div class="activity-text"><strong>${esc(m.name)}</strong> — ${esc(m.subject)}</div>
+          <div class="activity-time">${fmtDate(m.created_at)}</div>
+        </div>
+      </div>`).join('')}</div>` : `<div class="empty-state"><div class="empty-icon">📭</div><div class="empty-title">No messages yet</div></div>`;
+
+                // Recent visits
+                const vis = stats.success ? (stats.stats.recentVisits || []).slice(0, 5) : [];
+                const visEl = document.getElementById('recent-visits-list');
+                visEl.innerHTML = vis.length ? `<div class="activity-list">${vis.map(v => `
+      <div class="activity-item">
+        <div class="activity-dot blue"></div>
+        <div>
+          <div class="activity-text">${esc(v.page_visited || '/')}</div>
+          <div class="activity-time">${fmtDate(v.visited_at)}</div>
+        </div>
+      </div>`).join('')}</div>` : `<div class="empty-state"><div class="empty-icon">👀</div><div class="empty-title">No visits yet</div></div>`;
+            } catch (e) {
+                toast('Failed to load dashboard', 'error');
+            }
+        }
+
+        // ─── POSTS ─────────────────────────────────────────────────────────
+        let allPosts = [];
+        async function loadPosts() {
+            document.getElementById('posts-table-wrap').innerHTML = `<div class="loading-state"><div class="spin"></div><div>Loading…</div></div>`;
+            try {
+                const data = await fetch('/api/posts', { headers: authHeaders() }).then(r => r.json());
+                allPosts = data.success ? data.posts : [];
+                renderPostsTable(allPosts);
+            } catch { toast('Failed to load posts', 'error'); }
+        }
+
+        function renderPostsTable(posts) {
+            const wrap = document.getElementById('posts-table-wrap');
+            if (!posts.length) { wrap.innerHTML = `<div class="empty-state"><div class="empty-icon">📝</div><div class="empty-title">No posts yet</div><div class="empty-desc">Create your first blog post</div></div>`; return; }
+            wrap.innerHTML = `<table>
+    <thead><tr><th>Title</th><th>Category</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
+    <tbody>${posts.map(p => `<tr>
+      <td><strong>${esc(p.title)}</strong><div style="font-size:.75rem;color:var(--muted);margin-top:2px">${esc(p.excerpt || '')}</div></td>
+      <td><span class="badge badge-purple">${esc(p.category || 'General')}</span></td>
+      <td><span class="badge ${p.status === 'published' ? 'badge-green' : 'badge-yellow'}">${esc(p.status || 'draft')}</span></td>
+      <td style="color:var(--muted);font-size:.8rem">${fmtDate(p.created_at)}</td>
+      <td><div style="display:flex;gap:8px">
+        <button class="btn btn-ghost btn-sm" onclick="editPost(${p.id})">✏️ Edit</button>
+        <button class="btn btn-danger btn-sm" onclick="deletePost(${p.id},'${esc(p.title)}')">🗑️</button>
+      </div></td>
+    </tr>`).join('')}</tbody></table>`;
+        }
+
+        function filterPosts(q) { renderPostsTable(allPosts.filter(p => (p.title + p.category + p.status).toLowerCase().includes(q.toLowerCase()))); }
+
+        function openPostModal(post = null) {
+            document.getElementById('post-id').value = post ? post.id : '';
+            document.getElementById('post-title').value = post ? post.title : '';
+            document.getElementById('post-category').value = post ? (post.category || 'General') : 'General';
+            document.getElementById('post-status').value = post ? (post.status || 'draft') : 'draft';
+            document.getElementById('post-excerpt').value = post ? (post.excerpt || '') : '';
+            document.getElementById('post-content').value = post ? (post.content || '') : '';
+            document.getElementById('post-image').value = post ? (post.image_url || '') : '';
+            document.getElementById('post-tags').value = post ? (post.tags || '') : '';
+            document.getElementById('post-modal-title').textContent = post ? 'Edit Post' : 'New Blog Post';
+            openModal('post-modal');
+        }
+
+        async function editPost(id) {
+            try {
+                const data = await fetch(`/api/posts/${id}`, { headers: authHeaders() }).then(r => r.json());
+                if (data.success) openPostModal(data.post);
+            } catch { toast('Failed to load post', 'error'); }
+        }
+
+        async function savePost() {
+            const id = document.getElementById('post-id').value;
+            const body = {
+                title: document.getElementById('post-title').value.trim(),
+                category: document.getElementById('post-category').value,
+                status: document.getElementById('post-status').value,
+                excerpt: document.getElementById('post-excerpt').value.trim(),
+                content: document.getElementById('post-content').value.trim(),
+                image_url: document.getElementById('post-image').value.trim(),
+                tags: document.getElementById('post-tags').value.trim()
+            };
+            if (!body.title) { toast('Title is required', 'error'); return; }
+            try {
+                const url = id ? `/api/posts/${id}` : '/api/posts';
+                const method = id ? 'PUT' : 'POST';
+                const data = await fetch(url, { method, headers: authHeaders(), body: JSON.stringify(body) }).then(r => r.json());
+                if (data.success) { closeModal('post-modal'); toast(id ? 'Post updated!' : 'Post created!'); loadPosts(); }
+                else toast(data.message || 'Error saving post', 'error');
+            } catch { toast('Error saving post', 'error'); }
+        }
+
+        function deletePost(id, title) {
+            confirmDelete(`Delete "${title}"? This cannot be undone.`, async () => {
+                const data = await fetch(`/api/posts/${id}`, { method: 'DELETE', headers: authHeaders() }).then(r => r.json());
+                if (data.success) { toast('Post deleted'); loadPosts(); }
+                else toast('Failed to delete', 'error');
+            });
+        }
+
+        // ─── WORKS ─────────────────────────────────────────────────────────
+        let allWorks = [];
+        async function loadWorks() {
+            document.getElementById('works-table-wrap').innerHTML = `<div class="loading-state"><div class="spin"></div><div>Loading…</div></div>`;
+            try {
+                const data = await fetch('/api/works', { headers: authHeaders() }).then(r => r.json());
+                allWorks = data.success ? data.works : [];
+                renderWorksTable(allWorks);
+            } catch { toast('Failed to load works', 'error'); }
+        }
+
+        function renderWorksTable(works) {
+            const wrap = document.getElementById('works-table-wrap');
+            if (!works.length) { wrap.innerHTML = `<div class="empty-state"><div class="empty-icon">🎨</div><div class="empty-title">No projects yet</div><div class="empty-desc">Add your first project</div></div>`; return; }
+            wrap.innerHTML = `<table>
+    <thead><tr><th>Title</th><th>Category</th><th>Featured</th><th>Date</th><th>Actions</th></tr></thead>
+    <tbody>${works.map(w => `<tr>
+      <td><strong>${esc(w.title)}</strong></td>
+      <td><span class="badge badge-blue">${esc(w.category)}</span></td>
+      <td>${w.featured ? '<span class="badge badge-green">⭐ Yes</span>' : '<span class="badge badge-yellow">No</span>'}</td>
+      <td style="color:var(--muted);font-size:.8rem">${fmtDate(w.created_at)}</td>
+      <td><div style="display:flex;gap:8px">
+        <button class="btn btn-ghost btn-sm" onclick="editWork(${w.id})">✏️ Edit</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteWork(${w.id},'${esc(w.title)}')">🗑️</button>
+      </div></td>
+    </tr>`).join('')}</tbody></table>`;
+        }
+
+        function filterWorks(q) { renderWorksTable(allWorks.filter(w => (w.title + w.category).toLowerCase().includes(q.toLowerCase()))); }
+
+        function openWorkModal(work = null) {
+            document.getElementById('work-id').value = work ? work.id : '';
+            document.getElementById('work-title').value = work ? work.title : '';
+            document.getElementById('work-category').value = work ? (work.category || 'Web') : 'Web';
+            document.getElementById('work-featured').value = work ? (work.featured ? '1' : '0') : '0';
+            document.getElementById('work-description').value = work ? (work.description || '') : '';
+            document.getElementById('work-image').value = work ? (work.image_url || '') : '';
+            document.getElementById('work-url').value = work ? (work.project_url || '') : '';
+            document.getElementById('work-tags').value = work ? (work.tags || '') : '';
+            document.getElementById('work-modal-title').textContent = work ? 'Edit Project' : 'New Project';
+            openModal('work-modal');
+        }
+
+        async function editWork(id) {
+            const data = await fetch(`/api/works/${id}`, { headers: authHeaders() }).then(r => r.json());
+            if (data.success) openWorkModal(data.work);
+        }
+
+        async function saveWork() {
+            const id = document.getElementById('work-id').value;
+            const body = {
+                title: document.getElementById('work-title').value.trim(),
+                category: document.getElementById('work-category').value,
+                featured: document.getElementById('work-featured').value === '1',
+                description: document.getElementById('work-description').value.trim(),
+                image_url: document.getElementById('work-image').value.trim(),
+                project_url: document.getElementById('work-url').value.trim(),
+                tags: document.getElementById('work-tags').value.trim()
+            };
+            if (!body.title) { toast('Title is required', 'error'); return; }
+            const url = id ? `/api/works/${id}` : '/api/works';
+            const method = id ? 'PUT' : 'POST';
+            const data = await fetch(url, { method, headers: authHeaders(), body: JSON.stringify(body) }).then(r => r.json());
+            if (data.success) { closeModal('work-modal'); toast(id ? 'Project updated!' : 'Project created!'); loadWorks(); }
+            else toast(data.message || 'Error', 'error');
+        }
+
+        function deleteWork(id, title) {
+            confirmDelete(`Delete project "${title}"?`, async () => {
+                const data = await fetch(`/api/works/${id}`, { method: 'DELETE', headers: authHeaders() }).then(r => r.json());
+                if (data.success) { toast('Project deleted'); loadWorks(); }
+                else toast('Failed to delete', 'error');
+            });
+        }
+
+        // ─── CONTACTS ──────────────────────────────────────────────────────
+        let allContacts = [];
+        async function loadContacts() {
+            document.getElementById('contacts-table-wrap').innerHTML = `<div class="loading-state"><div class="spin"></div><div>Loading…</div></div>`;
+            try {
+                const data = await fetch('/api/contacts', { headers: authHeaders() }).then(r => r.json());
+                allContacts = data.success ? data.contacts : [];
+                renderContactsTable(allContacts);
+            } catch { toast('Failed to load messages', 'error'); }
+        }
+
+        function renderContactsTable(contacts) {
+            const wrap = document.getElementById('contacts-table-wrap');
+            if (!contacts.length) { wrap.innerHTML = `<div class="empty-state"><div class="empty-icon">📭</div><div class="empty-title">No messages yet</div></div>`; return; }
+            wrap.innerHTML = `<table>
+    <thead><tr><th>Name</th><th>Email</th><th>Subject</th><th>Message</th><th>Date</th><th>Actions</th></tr></thead>
+    <tbody>${contacts.map(c => `<tr>
+      <td><strong>${esc(c.name)}</strong></td>
+      <td><a href="mailto:${esc(c.email)}" style="color:var(--accent2)">${esc(c.email)}</a></td>
+      <td>${esc(c.subject)}</td>
+      <td style="max-width:200px;color:var(--muted);font-size:.8rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(c.message)}</td>
+      <td style="color:var(--muted);font-size:.8rem">${fmtDate(c.created_at)}</td>
+      <td><button class="btn btn-danger btn-sm" onclick="deleteContact(${c.id},'${esc(c.name)}')">🗑️</button></td>
+    </tr>`).join('')}</tbody></table>`;
+        }
+
+        function filterContacts(q) { renderContactsTable(allContacts.filter(c => (c.name + c.email + c.subject).toLowerCase().includes(q.toLowerCase()))); }
+
+        function deleteContact(id, name) {
+            confirmDelete(`Delete message from "${name}"?`, async () => {
+                const data = await fetch(`/api/contacts/${id}`, { method: 'DELETE', headers: authHeaders() }).then(r => r.json());
+                if (data.success) { toast('Message deleted'); loadContacts(); }
+                else toast('Failed to delete', 'error');
+            });
+        }
+
+        // ─── MEDIA ─────────────────────────────────────────────────────────
+        let mediaFiles = [];
+        async function loadMedia() {
+            try {
+                const data = await fetch('/api/media', { headers: authHeaders() }).then(r => r.json());
+                mediaFiles = data.success ? data.files : [];
+                renderMediaGrid(mediaFiles);
+            } catch {
+                renderMediaGrid([]);
+            }
+        }
+
+        function renderMediaGrid(files) {
+            const grid = document.getElementById('media-grid');
+            if (!files.length) { grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">🖼️</div><div class="empty-title">No media uploaded yet</div></div>`; return; }
+            grid.innerHTML = files.map(f => `
+    <div class="media-card">
+      <div class="media-thumbnail">${f.url ? `<img src="${esc(f.url)}" alt="${esc(f.name)}" loading="lazy">` : '🖼️'}</div>
+      <div class="media-info">
+        <div class="media-name" title="${esc(f.name)}">${esc(f.name)}</div>
+        <div class="media-size">${f.size ? formatBytes(f.size) : ''}</div>
+        <div style="display:flex;gap:6px;margin-top:8px">
+          <button class="btn btn-ghost btn-sm" onclick="copyUrl('${esc(f.url)}')">📋</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteMedia('${esc(f.name)}')">🗑️</button>
+        </div>
+      </div>
+    </div>`).join('');
+        }
+
+        async function handleFileUpload(files) {
+            if (!files || files.length === 0) return;
+            toast('Uploading…', 'info');
+            const toBase64 = (file) => new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve({ name: file.name, type: file.type, data: reader.result });
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+            try {
+                const fileObjs = await Promise.all(Array.from(files).map(toBase64));
+                for (const f of fileObjs) {
+                    const res = await fetch('/api/media/upload', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'x-admin-token': token },
+                        body: JSON.stringify({ files: [f] })
+                    });
+                    const data = await res.json();
+                    if (!data.success) toast(`Failed: ${f.name}`, 'error');
+                }
+                toast(`${fileObjs.length} file(s) uploaded!`);
+                loadMedia();
+            } catch (e) { toast('Upload failed: ' + e.message, 'error'); }
+        }
+
+        function copyUrl(url) { navigator.clipboard.writeText(url).then(() => toast('URL copied!')); }
+
+        function deleteMedia(name) {
+            confirmDelete(`Delete file "${name}"?`, async () => {
+                const data = await fetch(`/api/media/${encodeURIComponent(name)}`, { method: 'DELETE', headers: authHeaders() }).then(r => r.json());
+                if (data.success) { toast('File deleted'); loadMedia(); }
+                else toast('Failed to delete', 'error');
+            });
+        }
+
+        function formatBytes(b) { if (b < 1024) return b + 'B'; if (b < 1048576) return (b / 1024).toFixed(1) + 'KB'; return (b / 1048576).toFixed(1) + 'MB'; }
+
+        // ─── SETTINGS ──────────────────────────────────────────────────────
+        async function changePassword() {
+            const cur = document.getElementById('set-cur-pass').value;
+            const nw = document.getElementById('set-new-pass').value;
+            if (!cur || !nw) { toast('Fill both fields', 'error'); return; }
+            if (nw.length < 6) { toast('Password must be at least 6 characters', 'error'); return; }
+            try {
+                const data = await fetch('/api/admin/change-password', {
+                    method: 'POST', headers: authHeaders(),
+                    body: JSON.stringify({ email: adminEmail, currentPassword: cur, newPassword: nw })
+                }).then(r => r.json());
+                if (data.success) { toast('Password updated!'); document.getElementById('set-cur-pass').value = ''; document.getElementById('set-new-pass').value = ''; }
+                else toast(data.message || 'Error', 'error');
+            } catch { toast('Error updating password', 'error'); }
+        }
+
+        async function saveBio() {
+            const bio = document.getElementById('set-bio').value.trim();
+            toast('Bio saved locally (connect to your DB for persistence)', 'info');
+        }
+
+        // ─── LOGOUT ────────────────────────────────────────────────────────
+        function logout() {
+            confirmDelete('Sign out of the admin portal?', () => {
+                sessionStorage.removeItem('adminLoggedIn');
+                sessionStorage.removeItem('adminToken');
+                sessionStorage.removeItem('adminEmail');
+                window.location.replace('/admin-login.html');
+            });
+            document.getElementById('confirm-overlay').querySelector('.confirm-icon').textContent = '🚪';
+            document.getElementById('confirm-overlay').querySelector('.confirm-title').textContent = 'Sign Out';
+            document.getElementById('confirm-overlay').querySelector('[onclick="executeConfirm()"]').textContent = 'Sign Out';
+        }
+
+        // ─── UTILS ─────────────────────────────────────────────────────────
+        function esc(s) { const d = document.createElement('div'); d.textContent = String(s || ''); return d.innerHTML; }
+        function fmtDate(d) { return d ? new Date(d).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : '—'; }
+
+        // Drag & drop upload
+        const zone = document.getElementById('upload-zone');
+        zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag'); });
+        zone.addEventListener('dragleave', () => zone.classList.remove('drag'));
+        zone.addEventListener('drop', e => { e.preventDefault(); zone.classList.remove('drag'); handleFileUpload(e.dataTransfer.files); });
+
+        // ─── BOOT ───────────────────────────────────────────────────────────
+        loadDashboard();
+    </script>
+</body>
+
+</html>
